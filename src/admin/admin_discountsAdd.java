@@ -1,22 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package admin;
 
 import static admin.adminMain.checkData;
 import config.TableQueries;
 
-/**
- *
- * @author w10
- */
 public class admin_discountsAdd extends javax.swing.JFrame {
 
-    /**
-     * Creates new form admin_staff_add
-     */
     public admin_discountsAdd() {
         setUndecorated(true);
         initComponents();
@@ -34,7 +22,7 @@ public class admin_discountsAdd extends javax.swing.JFrame {
         jPanel7 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
         redeem = new enhance.CustomTF();
-        type = new javax.swing.JComboBox<>();
+        rtype = new javax.swing.JComboBox<>();
         error = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
@@ -46,6 +34,7 @@ public class admin_discountsAdd extends javax.swing.JFrame {
         jPanel8 = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
         code = new enhance.CustomTF();
+        type = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -104,21 +93,21 @@ public class admin_discountsAdd extends javax.swing.JFrame {
                 redeemPropertyChange(evt);
             }
         });
-        jPanel2.add(redeem, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 200, 250, 40));
+        jPanel2.add(redeem, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 200, 120, 40));
 
-        type.setBackground(new java.awt.Color(44, 88, 110));
-        type.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Percent", "Fixed Amount" }));
-        type.addActionListener(new java.awt.event.ActionListener() {
+        rtype.setBackground(new java.awt.Color(44, 88, 110));
+        rtype.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Redeem on Product", "Redeem on Transaction" }));
+        rtype.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                typeActionPerformed(evt);
+                rtypeActionPerformed(evt);
             }
         });
-        type.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+        rtype.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                typePropertyChange(evt);
+                rtypePropertyChange(evt);
             }
         });
-        jPanel2.add(type, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 140, 120, 40));
+        jPanel2.add(rtype, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 200, 120, 40));
 
         error.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
         error.setForeground(new java.awt.Color(153, 0, 0));
@@ -208,6 +197,20 @@ public class admin_discountsAdd extends javax.swing.JFrame {
         });
         jPanel2.add(code, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 250, 40));
 
+        type.setBackground(new java.awt.Color(44, 88, 110));
+        type.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Percent", "Fixed Amount" }));
+        type.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                typeActionPerformed(evt);
+            }
+        });
+        type.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                typePropertyChange(evt);
+            }
+        });
+        jPanel2.add(type, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 140, 120, 40));
+
         jPanel1.add(jPanel2);
         jPanel2.setBounds(10, 70, 290, 380);
 
@@ -256,13 +259,13 @@ public class admin_discountsAdd extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_redeemPropertyChange
 
-    private void typePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_typePropertyChange
+    private void rtypePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_rtypePropertyChange
 //        type_display.setText((String)type.getSelectedItem());
-    }//GEN-LAST:event_typePropertyChange
+    }//GEN-LAST:event_rtypePropertyChange
 
-    private void typeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_typeActionPerformed
+    private void rtypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rtypeActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_typeActionPerformed
+    }//GEN-LAST:event_rtypeActionPerformed
 
     private void jPanel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel3MouseClicked
         if(name.getText().isEmpty()||code.getText().isEmpty()|| amount.getText().isEmpty()|| redeem.getText().isEmpty()){
@@ -272,7 +275,7 @@ public class admin_discountsAdd extends javax.swing.JFrame {
                 error.setText("*Promotional Code already taken!");
             }else{
                 TableQueries dis = new TableQueries();
-                dis.addDiscount(code.getText(), name.getText(), Double.parseDouble(amount.getText()), (String)type.getSelectedItem(), Integer.parseInt(redeem.getText()));
+                dis.addDiscount(code.getText(), name.getText(), Double.parseDouble(amount.getText()), (String)type.getSelectedItem(), Integer.parseInt(redeem.getText()), (String)rtype.getSelectedItem());
                 this.dispose();
             }
         }
@@ -290,6 +293,14 @@ public class admin_discountsAdd extends javax.swing.JFrame {
     private void codePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_codePropertyChange
         // TODO add your handling code here:
     }//GEN-LAST:event_codePropertyChange
+
+    private void typeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_typeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_typeActionPerformed
+
+    private void typePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_typePropertyChange
+        // TODO add your handling code here:
+    }//GEN-LAST:event_typePropertyChange
 
     /**
      * @param args the command line arguments
@@ -350,6 +361,7 @@ public class admin_discountsAdd extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel8;
     private javax.swing.JTextField name;
     private javax.swing.JTextField redeem;
+    private javax.swing.JComboBox<String> rtype;
     private javax.swing.JComboBox<String> type;
     // End of variables declaration//GEN-END:variables
 }

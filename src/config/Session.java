@@ -8,6 +8,7 @@ public class Session {
     private String lname;
     private String username;
     private String password;
+    private String img;
     private String type;
     private String status;
     
@@ -71,6 +72,14 @@ public class Session {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+    
+    public String getImage() {
+        return img;
+    }
+
+    public void setImage(String image) {
+        this.img = image;
     }
 
     public String getType() {

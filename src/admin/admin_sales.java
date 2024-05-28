@@ -1,12 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package admin;
 
-import com.toedter.calendar.JDateChooser;
 import config.SalesGraph;
+import print.TablePrinter;
 import config.TransactionGraph;
 import config.dbConnector;
 import java.awt.event.ActionEvent;
@@ -20,13 +15,10 @@ import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import net.proteanit.sql.DbUtils;
 
-/**
- *
- * @author w10
- */
 public class admin_sales extends javax.swing.JInternalFrame {
 
     public admin_sales() {
@@ -72,7 +64,19 @@ public class admin_sales extends javax.swing.JInternalFrame {
             dailysales.setText(""+ connector.salesCount(true));
             String query = constructQuery();
             ResultSet rs = connector.getData(query);
-            transtable.setModel(DbUtils.resultSetToTableModel(rs));
+            DefaultTableModel tblmod = (DefaultTableModel)transtable.getModel();
+            tblmod.setRowCount(0);
+            while(rs.next()){
+                String dbId = String.valueOf(rs.getInt("t_id"));
+                String dbStaff = String.valueOf(rs.getInt("t_staff"));
+                String dbCustomer = String.valueOf(rs.getInt("t_customer"));
+                String dbTotal = String.valueOf(rs.getInt("t_total"));
+                String dbDateTime = rs.getString("t_datetime");
+                
+                String table[] = {dbId, dbStaff, dbCustomer, dbTotal, dbDateTime};
+                
+                tblmod.addRow(table);
+                }
         } catch (SQLException ex) {
             System.out.println("Error: " + ex.getMessage());
         }
@@ -138,8 +142,6 @@ public class admin_sales extends javax.swing.JInternalFrame {
         transtable = new javax.swing.JTable();
         jPanel1 = new enhance.RoundBorder_g();
         jLabel2 = new javax.swing.JLabel();
-        jPanel3 = new enhance.RoundBorder_g();
-        jLabel4 = new javax.swing.JLabel();
         jPanel2 = new enhance.RoundPanel_lb();
         jLabel3 = new javax.swing.JLabel();
         searchbar = new javax.swing.JTextField();
@@ -217,6 +219,29 @@ public class admin_sales extends javax.swing.JInternalFrame {
 
         transtable.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
         transtable.setForeground(new java.awt.Color(53, 55, 75));
+        transtable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Transaction #", "Staff", "Customer", "Total", "Date and Time"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         transtable.setGridColor(new java.awt.Color(255, 255, 255));
         transtable.setSelectionBackground(new java.awt.Color(120, 160, 131));
         transtable.getTableHeader().setReorderingAllowed(false);
@@ -237,6 +262,13 @@ public class admin_sales extends javax.swing.JInternalFrame {
             }
         });
         jScrollPane1.setViewportView(transtable);
+        if (transtable.getColumnModel().getColumnCount() > 0) {
+            transtable.getColumnModel().getColumn(0).setResizable(false);
+            transtable.getColumnModel().getColumn(1).setResizable(false);
+            transtable.getColumnModel().getColumn(2).setResizable(false);
+            transtable.getColumnModel().getColumn(3).setResizable(false);
+            transtable.getColumnModel().getColumn(4).setResizable(false);
+        }
 
         jPanel4.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 730, 140));
 
@@ -247,22 +279,21 @@ public class admin_sales extends javax.swing.JInternalFrame {
         jLabel2.setForeground(new java.awt.Color(0, 51, 51));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("Print Table");
+        jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel2MouseClicked(evt);
+            }
+        });
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 130, 40));
 
-        jPanel4.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 200, 150, 40));
-
-        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel4.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(0, 51, 51));
-        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setText("Print Copy of Reciept");
-        jPanel3.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 130, 40));
-
-        jPanel4.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 200, 150, 40));
+        jPanel4.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 200, 150, 40));
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel2MouseClicked(evt);
+            }
+        });
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel3.setBackground(new java.awt.Color(255, 255, 255));
@@ -405,6 +436,51 @@ public class admin_sales extends javax.swing.JInternalFrame {
         displayTable();
     }//GEN-LAST:event_searchbuttonMouseClicked
 
+    private void jPanel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MouseClicked
+        int rowid = transtable.getSelectedRow();
+        TableModel model = transtable.getModel();
+        
+        if(rowid != -1){
+            dbConnector connect = new dbConnector();
+            try {
+                ResultSet rs = connect.getData("SELECT " +
+                    "t.t_id, " +
+                    "t.t_total, " +
+                    "t.t_datetime, " +
+                    "t.t_staff, " +
+                    "t.t_customer, " +
+                    "u.u_fname AS staff_fname, " +
+                    "u.u_lname AS staff_lname, " +
+                    "u.u_type AS staff_type, " +
+                    "c.c_fname AS customer_fname, " +
+                    "c.c_lname AS customer_lname " +
+                    "FROM transactions t " +
+                    "JOIN users u ON t.t_staff = u.u_id " +
+                    "JOIN customers c ON t.t_customer = c.c_id WHERE t.t_id = "+model.getValueAt(rowid, 0));
+                if(rs.next()){
+                    admin_salesView open = new admin_salesView();
+                    open.id = Integer.parseInt(model.getValueAt(rowid, 0).toString());
+                    open.trans.setText("Transaction No: "+ model.getValueAt(rowid, 0));
+                    open.customer.setText("Customer: "+ rs.getString("customer_fname")+ " "+ rs.getString("customer_lname"));
+                    open.staff.setText("Staff: "+ rs.getString("staff_fname")+ " "+ rs.getString("staff_lname") + " ("+ rs.getString("staff_type")+ ")");
+                    open.total.setText("Total: "+ rs.getString("t.t_total"));
+                    open.date.setText("Date and Time: "+ rs.getString("t.t_datetime"));
+                    open.setVisible(true);
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex);
+            }
+            
+        }else{
+            JOptionPane.showMessageDialog(this, "Please select a Transaction!");
+        }
+    }//GEN-LAST:event_jPanel2MouseClicked
+
+    private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
+        TablePrinter print = new TablePrinter(transtable, "Transaction History");
+        print.print();
+    }//GEN-LAST:event_jLabel2MouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel dailysales;
@@ -415,14 +491,12 @@ public class admin_sales extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;

@@ -13,29 +13,34 @@ import javax.swing.JComponent;
 import javax.swing.KeyStroke;
 import config.Session;
 import config.TransactionGraph;
-import java.sql.DatabaseMetaData;
+import enhance.notif;
+import java.awt.event.ActionListener;
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import javax.swing.Timer;
 import login.loginForm;
+import raven.glasspanepopup.DefaultOption;
+import raven.glasspanepopup.GlassPanePopup;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
-/**
- *
- * @author SCC1
- */
 public class adminMain extends javax.swing.JFrame {
 
-    /**
-     * Creates new form cashier_dashboard
-     */
     public adminMain() {
+        setUndecorated(true);
         initComponents();
+        GlassPanePopup.install(this);
         setTitle("Administrator Control Panel");
         dashboardPanel();
+        
+        Timer timer = new Timer(0, new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                setDateTime();
+            }
+        });
+        timer.start();
+        
+        
         Action f1Action = new AbstractAction() {
         @Override
             public void actionPerformed(ActionEvent e) {
@@ -63,7 +68,42 @@ public class adminMain extends javax.swing.JFrame {
         };
         this.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0), "F3_pressed");
         this.getRootPane().getActionMap().put("F3_pressed", f3Action);
+        
+        Action f4Action = new AbstractAction() {
+        @Override
+            public void actionPerformed(ActionEvent e) {
+                customersPanel();
+            }
+        };
+        this.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F4, 0), "F4_pressed");
+        this.getRootPane().getActionMap().put("F4_pressed", f4Action);
+        
+        Action f5Action = new AbstractAction() {
+        @Override
+            public void actionPerformed(ActionEvent e) {
+                discountsPanel();
+            }
+        };
+        this.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0), "F5_pressed");
+        this.getRootPane().getActionMap().put("F5_pressed", f5Action);
        
+        Action f6Action = new AbstractAction() {
+        @Override
+            public void actionPerformed(ActionEvent e) {
+                salesPanel();
+            }
+        };
+        this.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F6, 0), "F6_pressed");
+        this.getRootPane().getActionMap().put("F6_pressed", f6Action);
+        
+        Action f7Action = new AbstractAction() {
+        @Override
+            public void actionPerformed(ActionEvent e) {
+                archivePanel();
+            }
+        };
+        this.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F7, 0), "F7_pressed");
+        this.getRootPane().getActionMap().put("F7_pressed", f7Action);
     }
     
     Color bgcolor = new Color(246,244,235);
@@ -77,7 +117,18 @@ public class adminMain extends javax.swing.JFrame {
     boolean settings_open = false;
     boolean archives_open = false;
     
- 
+    public void setDateTime(){
+        Date now = new Date();
+        
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+        String time = timeFormat.format(now);
+        
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
+        String date = dateFormat.format(now);
+        
+        date_disp.setText(date);
+        time_disp.setText(time);
+    }
     
     public static boolean checkData(String a,String b, String c, String d){
         dbConnector connector = new dbConnector();
@@ -110,37 +161,37 @@ public class adminMain extends javax.swing.JFrame {
         staff_open = false;
         jPanel12.setBackground(sidecolor);
         jLabel11.setForeground(text1color);
-        jLabel11.setFont(new Font(jLabel11.getFont().getFontName(), Font.PLAIN, jLabel11.getFont().getSize()));
+        jLabel11.setFont(new Font("SansSerif", Font.PLAIN, 12));
         
         products_open = false;
         jPanel11.setBackground(sidecolor);
         jLabel16.setForeground(text1color);
-        jLabel16.setFont(new Font(jLabel16.getFont().getFontName(), Font.PLAIN, jLabel16.getFont().getSize()));
+        jLabel16.setFont(new Font("SansSerif", Font.PLAIN, 12));
         
         customers_open = false;
         jPanel14.setBackground(sidecolor);
         jLabel17.setForeground(text1color);
-        jLabel17.setFont(new Font(jLabel17.getFont().getFontName(), Font.PLAIN, jLabel17.getFont().getSize()));
+        jLabel17.setFont(new Font("SansSerif", Font.PLAIN, 12));
         
         sales_open = false;
         jPanel15.setBackground(sidecolor);
         jLabel18.setForeground(text1color);
-        jLabel18.setFont(new Font(jLabel18.getFont().getFontName(), Font.PLAIN, jLabel18.getFont().getSize()));
+        jLabel18.setFont(new Font("SansSerif", Font.PLAIN, 12));
         
         discounts_open = false;
         jPanel16.setBackground(sidecolor);
         jLabel19.setForeground(text1color);
-        jLabel19.setFont(new Font(jLabel19.getFont().getFontName(), Font.PLAIN, jLabel19.getFont().getSize()));
+        jLabel19.setFont(new Font("SansSerif", Font.PLAIN, 12));
         
         settings_open = false;
         jPanel13.setBackground(sidecolor);
         jLabel20.setForeground(text1color);
-        jLabel20.setFont(new Font(jLabel20.getFont().getFontName(), Font.PLAIN, jLabel20.getFont().getSize()));
+        jLabel20.setFont(new Font("SansSerif", Font.PLAIN, 12));
         
         archives_open = false;
         jPanel17.setBackground(sidecolor);
         jLabel21.setForeground(text1color);
-        jLabel21.setFont(new Font(jLabel20.getFont().getFontName(), Font.PLAIN, jLabel20.getFont().getSize()));
+        jLabel21.setFont(new Font("SansSerif", Font.PLAIN, 12));
     }
     
     public void dashboardPanel(){
@@ -150,14 +201,13 @@ public class adminMain extends javax.swing.JFrame {
         transactiongraph.add(TransactionGraph.createGraph());
         salesgraph.setLayout(new java.awt.BorderLayout());
         salesgraph.add(SalesGraph.createGraph());
-        
+        jPanel4.setVisible(true);
         dbConnector connect = new dbConnector();
         
-        numstaff.setText(""+connect.columnCount("users"));
-        numprod.setText(""+connect.columnCount("products"));
-        numcustomer.setText(""+connect.columnCount("customers"));
-//        numsales.setText(""+sales);
-//        numdiscounts.setText(""+discounts);
+        numstaff.setText(""+connect.archiveCount("users"));
+        numprod.setText(""+connect.archiveCount("products"));
+        numcustomer.setText(""+connect.archiveCount("customers"));
+        numdiscounts.setText(""+connect.archiveCount("discounts"));
     }
     
     public void staffPanel(){
@@ -165,7 +215,7 @@ public class adminMain extends javax.swing.JFrame {
         desktop.setVisible(true);
         admin_staff up = new admin_staff();
         desktop.add(up).setVisible(true);;
-        
+        jPanel4.setVisible(false);
         jPanel12.setBackground(new Color(80, 114, 123));
         jLabel11.setForeground(Color.WHITE);
         jLabel11.setFont(new Font(jLabel11.getFont().getFontName(), Font.BOLD, jLabel11.getFont().getSize()));
@@ -178,7 +228,7 @@ public class adminMain extends javax.swing.JFrame {
         desktop.setVisible(true);
         admin_products up = new admin_products();
         desktop.add(up).setVisible(true);
-        
+        jPanel4.setVisible(false);
         jPanel11.setBackground(new Color(80, 114, 123));
         jLabel16.setForeground(Color.WHITE);
         jLabel16.setFont(new Font(jLabel16.getFont().getFontName(), Font.BOLD, jLabel16.getFont().getSize()));
@@ -191,7 +241,7 @@ public class adminMain extends javax.swing.JFrame {
         desktop.setVisible(true);
         admin_customers up = new admin_customers();
         desktop.add(up).setVisible(true);
-        
+        jPanel4.setVisible(false);
         jPanel14.setBackground(new Color(80, 114, 123));
         jLabel17.setForeground(Color.WHITE);
         jLabel17.setFont(new Font(jLabel17.getFont().getFontName(), Font.BOLD, jLabel17.getFont().getSize()));
@@ -204,7 +254,7 @@ public class adminMain extends javax.swing.JFrame {
         desktop.setVisible(true);
         admin_sales up = new admin_sales();
         desktop.add(up).setVisible(true);
-        
+        jPanel4.setVisible(false);
         jPanel15.setBackground(new Color(80, 114, 123));
         jLabel18.setForeground(Color.WHITE);
         jLabel18.setFont(new Font(jLabel18.getFont().getFontName(), Font.BOLD, jLabel18.getFont().getSize()));
@@ -217,7 +267,7 @@ public class adminMain extends javax.swing.JFrame {
         desktop.setVisible(true);
         admin_discounts up = new admin_discounts();
         desktop.add(up).setVisible(true);
-        
+        jPanel4.setVisible(false);
         jPanel16.setBackground(new Color(80, 114, 123));
         jLabel19.setForeground(Color.WHITE);
         jLabel19.setFont(new Font(jLabel19.getFont().getFontName(), Font.BOLD, jLabel19.getFont().getSize()));
@@ -230,7 +280,7 @@ public class adminMain extends javax.swing.JFrame {
         desktop.setVisible(true);
         admin_settings up = new admin_settings();
         desktop.add(up).setVisible(true);
-        
+        jPanel4.setVisible(false);
         jPanel13.setBackground(new Color(80, 114, 123));
         jLabel20.setForeground(Color.WHITE);
         jLabel20.setFont(new Font(jLabel19.getFont().getFontName(), Font.BOLD, jLabel19.getFont().getSize()));
@@ -245,7 +295,7 @@ public class adminMain extends javax.swing.JFrame {
         resetMenu();
         desktop.setVisible(true);
         desktop.add(up).setVisible(true);
-        
+        jPanel4.setVisible(false);
         jPanel17.setBackground(new Color(80, 114, 123));
         jLabel21.setForeground(Color.WHITE);
         jLabel21.setFont(new Font(jLabel19.getFont().getFontName(), Font.BOLD, jLabel19.getFont().getSize()));
@@ -253,17 +303,14 @@ public class adminMain extends javax.swing.JFrame {
         archives_open = true;
     }
 
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
         desktop = new javax.swing.JDesktopPane();
+        salesgraph = new enhance.RoundBorder_g();
+        transactiongraph = new enhance.RoundBorder_g();
         jPanel5 = new javax.swing.JPanel();
         jPanel11 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
@@ -292,29 +339,30 @@ public class adminMain extends javax.swing.JFrame {
         jPanel17 = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
         jLabel21 = new javax.swing.JLabel();
-        searchbar = new javax.swing.JTextField();
-        searchbutton = new enhance.RoundBorder_g();
-        jLabel13 = new javax.swing.JLabel();
-        jPanel9 = new enhance.RoundPanel();
+        jPanel9 = new enhance.RoundBorder_w();
         jLabel14 = new javax.swing.JLabel();
         numdiscounts = new javax.swing.JLabel();
-        jPanel18 = new enhance.RoundPanel();
-        jLabel15 = new javax.swing.JLabel();
-        numsales = new javax.swing.JLabel();
-        jPanel19 = new enhance.RoundPanel();
-        jLabel22 = new javax.swing.JLabel();
-        numcustomer = new javax.swing.JLabel();
-        jPanel20 = new enhance.RoundPanel();
-        jLabel23 = new javax.swing.JLabel();
-        numprod = new javax.swing.JLabel();
-        jPanel21 = new enhance.RoundPanel();
+        jPanel21 = new enhance.RoundBorder_w();
         jLabel24 = new javax.swing.JLabel();
         numstaff = new javax.swing.JLabel();
-        salesgraph = new enhance.RoundBorder_g();
-        transactiongraph = new enhance.RoundBorder_g();
-        jPanel3 = new javax.swing.JPanel();
-        jLabel25 = new javax.swing.JLabel();
+        jPanel20 = new enhance.RoundBorder_w();
+        jLabel23 = new javax.swing.JLabel();
+        numprod = new javax.swing.JLabel();
+        jPanel19 = new enhance.RoundBorder_w();
+        jLabel22 = new javax.swing.JLabel();
+        numcustomer = new javax.swing.JLabel();
+        jPanel6 = new javax.swing.JPanel();
+        header = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
+        jLabel25 = new javax.swing.JLabel();
+        jPanel3 = new enhance.RoundBorder_g();
+        jLabel13 = new javax.swing.JLabel();
+        jPanel4 = new enhance.RoundBorder_g();
+        date_disp = new javax.swing.JLabel();
+        time_disp = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
+        jPanel7 = new enhance.RoundBorder_g();
+        jLabel15 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -339,6 +387,38 @@ public class adminMain extends javax.swing.JFrame {
 
         jPanel1.add(desktop);
         desktop.setBounds(170, 0, 810, 610);
+
+        salesgraph.setBackground(new java.awt.Color(255, 255, 255));
+
+        javax.swing.GroupLayout salesgraphLayout = new javax.swing.GroupLayout(salesgraph);
+        salesgraph.setLayout(salesgraphLayout);
+        salesgraphLayout.setHorizontalGroup(
+            salesgraphLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 370, Short.MAX_VALUE)
+        );
+        salesgraphLayout.setVerticalGroup(
+            salesgraphLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 230, Short.MAX_VALUE)
+        );
+
+        jPanel1.add(salesgraph);
+        salesgraph.setBounds(580, 360, 370, 230);
+
+        transactiongraph.setBackground(new java.awt.Color(255, 255, 255));
+
+        javax.swing.GroupLayout transactiongraphLayout = new javax.swing.GroupLayout(transactiongraph);
+        transactiongraph.setLayout(transactiongraphLayout);
+        transactiongraphLayout.setHorizontalGroup(
+            transactiongraphLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 370, Short.MAX_VALUE)
+        );
+        transactiongraphLayout.setVerticalGroup(
+            transactiongraphLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 230, Short.MAX_VALUE)
+        );
+
+        jPanel1.add(transactiongraph);
+        transactiongraph.setBounds(200, 360, 370, 230);
 
         jPanel5.setBackground(new java.awt.Color(52, 73, 85));
         jPanel5.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -508,6 +588,11 @@ public class adminMain extends javax.swing.JFrame {
         jPanel5.add(jPanel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 250, 150, 30));
 
         jPanel2.setBackground(new java.awt.Color(52, 73, 85));
+        jPanel2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel2MouseClicked(evt);
+            }
+        });
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/media/icon_logout.png"))); // NOI18N
@@ -559,37 +644,12 @@ public class adminMain extends javax.swing.JFrame {
         jPanel1.add(jPanel5);
         jPanel5.setBounds(0, 0, 170, 610);
 
-        searchbar.setForeground(new java.awt.Color(53, 55, 75));
-        searchbar.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(120, 160, 131), 1, true));
-        searchbar.setMargin(new java.awt.Insets(1, 1, 1, 1));
-        searchbar.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                searchbarMouseReleased(evt);
-            }
-        });
-        searchbar.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-            public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                searchbarPropertyChange(evt);
-            }
-        });
-        jPanel1.add(searchbar);
-        searchbar.setBounds(230, 130, 620, 40);
-
-        searchbutton.setBackground(new java.awt.Color(255, 255, 255));
-        searchbutton.setToolTipText("Search");
-        searchbutton.addMouseListener(new java.awt.event.MouseAdapter() {
+        jPanel9.setBackground(new java.awt.Color(80, 114, 123));
+        jPanel9.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                searchbuttonMouseClicked(evt);
+                jPanel9MouseClicked(evt);
             }
         });
-        searchbutton.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/media/icon_search.png"))); // NOI18N
-        searchbutton.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, -1, 30));
-
-        jPanel1.add(searchbutton);
-        searchbutton.setBounds(860, 130, 60, 40);
-
         jPanel9.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel14.setFont(new java.awt.Font("Tw Cen MT", 0, 18)); // NOI18N
@@ -597,47 +657,39 @@ public class adminMain extends javax.swing.JFrame {
         jLabel14.setText("Discounts");
         jPanel9.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 80, 40));
 
-        numdiscounts.setFont(new java.awt.Font("SansSerif", 0, 60)); // NOI18N
+        numdiscounts.setFont(new java.awt.Font("SansSerif", 0, 48)); // NOI18N
         numdiscounts.setForeground(new java.awt.Color(255, 255, 255));
         numdiscounts.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         numdiscounts.setText("0");
-        jPanel9.add(numdiscounts, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, 110, -1));
+        jPanel9.add(numdiscounts, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 40, 110, -1));
 
         jPanel1.add(jPanel9);
-        jPanel9.setBounds(650, 190, 130, 170);
+        jPanel9.setBounds(760, 250, 170, 120);
 
-        jPanel18.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jPanel21.setBackground(new java.awt.Color(80, 114, 123));
+        jPanel21.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel21MouseClicked(evt);
+            }
+        });
+        jPanel21.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel15.setFont(new java.awt.Font("Tw Cen MT", 0, 18)); // NOI18N
-        jLabel15.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel15.setText("Sales");
-        jPanel18.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 56, 40));
+        jLabel24.setBackground(new java.awt.Color(80, 114, 123));
+        jLabel24.setFont(new java.awt.Font("Tw Cen MT", 0, 18)); // NOI18N
+        jLabel24.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel24.setText("Staff");
+        jPanel21.add(jLabel24, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 56, 40));
 
-        numsales.setFont(new java.awt.Font("SansSerif", 0, 60)); // NOI18N
-        numsales.setForeground(new java.awt.Color(255, 255, 255));
-        numsales.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        numsales.setText("0");
-        jPanel18.add(numsales, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, 110, -1));
+        numstaff.setFont(new java.awt.Font("SansSerif", 0, 48)); // NOI18N
+        numstaff.setForeground(new java.awt.Color(255, 255, 255));
+        numstaff.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        numstaff.setText("0");
+        jPanel21.add(numstaff, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 40, 110, -1));
 
-        jPanel1.add(jPanel18);
-        jPanel18.setBounds(790, 190, 130, 170);
+        jPanel1.add(jPanel21);
+        jPanel21.setBounds(220, 250, 170, 120);
 
-        jPanel19.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel22.setFont(new java.awt.Font("Tw Cen MT", 0, 18)); // NOI18N
-        jLabel22.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel22.setText("Customers");
-        jPanel19.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 90, 40));
-
-        numcustomer.setFont(new java.awt.Font("SansSerif", 0, 60)); // NOI18N
-        numcustomer.setForeground(new java.awt.Color(255, 255, 255));
-        numcustomer.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        numcustomer.setText("0");
-        jPanel19.add(numcustomer, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, 110, -1));
-
-        jPanel1.add(jPanel19);
-        jPanel19.setBounds(510, 190, 130, 170);
-
+        jPanel20.setBackground(new java.awt.Color(80, 114, 123));
         jPanel20.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jPanel20MouseClicked(evt);
@@ -650,82 +702,107 @@ public class adminMain extends javax.swing.JFrame {
         jLabel23.setText("Products");
         jPanel20.add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 80, 40));
 
-        numprod.setFont(new java.awt.Font("SansSerif", 0, 60)); // NOI18N
+        numprod.setFont(new java.awt.Font("SansSerif", 0, 48)); // NOI18N
         numprod.setForeground(new java.awt.Color(255, 255, 255));
         numprod.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         numprod.setText("0");
-        jPanel20.add(numprod, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, 110, -1));
+        jPanel20.add(numprod, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 40, 110, -1));
 
         jPanel1.add(jPanel20);
-        jPanel20.setBounds(370, 190, 130, 170);
+        jPanel20.setBounds(400, 250, 170, 120);
 
-        jPanel21.addMouseListener(new java.awt.event.MouseAdapter() {
+        jPanel19.setBackground(new java.awt.Color(80, 114, 123));
+        jPanel19.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jPanel21MouseClicked(evt);
+                jPanel19MouseClicked(evt);
             }
         });
-        jPanel21.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jPanel19.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel24.setFont(new java.awt.Font("Tw Cen MT", 0, 18)); // NOI18N
-        jLabel24.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel24.setText("Staff");
-        jPanel21.add(jLabel24, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 56, 40));
+        jLabel22.setFont(new java.awt.Font("Tw Cen MT", 0, 18)); // NOI18N
+        jLabel22.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel22.setText("Customers");
+        jPanel19.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 90, 40));
 
-        numstaff.setFont(new java.awt.Font("SansSerif", 0, 60)); // NOI18N
-        numstaff.setForeground(new java.awt.Color(255, 255, 255));
-        numstaff.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        numstaff.setText("0");
-        jPanel21.add(numstaff, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, 110, -1));
+        numcustomer.setFont(new java.awt.Font("SansSerif", 0, 48)); // NOI18N
+        numcustomer.setForeground(new java.awt.Color(255, 255, 255));
+        numcustomer.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        numcustomer.setText("0");
+        jPanel19.add(numcustomer, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 40, 110, -1));
 
-        jPanel1.add(jPanel21);
-        jPanel21.setBounds(230, 190, 130, 170);
+        jPanel1.add(jPanel19);
+        jPanel19.setBounds(580, 250, 170, 120);
 
-        salesgraph.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel6.setBackground(new java.awt.Color(120, 160, 131));
+        jPanel6.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        javax.swing.GroupLayout salesgraphLayout = new javax.swing.GroupLayout(salesgraph);
-        salesgraph.setLayout(salesgraphLayout);
-        salesgraphLayout.setHorizontalGroup(
-            salesgraphLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 340, Short.MAX_VALUE)
-        );
-        salesgraphLayout.setVerticalGroup(
-            salesgraphLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 200, Short.MAX_VALUE)
-        );
+        header.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
+        header.setForeground(new java.awt.Color(255, 255, 255));
+        header.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        header.setText("Hello,");
+        jPanel6.add(header, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 80, 390, 30));
 
-        jPanel1.add(salesgraph);
-        salesgraph.setBounds(590, 380, 340, 200);
+        jLabel12.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        jLabel12.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel12.setText("Welcome to Opswift Point of Sales System");
+        jPanel6.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 110, 350, -1));
 
-        transactiongraph.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel25.setIcon(new javax.swing.ImageIcon(getClass().getResource("/media/headerdash.png"))); // NOI18N
+        jPanel6.add(jLabel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
-        javax.swing.GroupLayout transactiongraphLayout = new javax.swing.GroupLayout(transactiongraph);
-        transactiongraph.setLayout(transactiongraphLayout);
-        transactiongraphLayout.setHorizontalGroup(
-            transactiongraphLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 340, Short.MAX_VALUE)
-        );
-        transactiongraphLayout.setVerticalGroup(
-            transactiongraphLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 200, Short.MAX_VALUE)
-        );
+        jPanel1.add(jPanel6);
+        jPanel6.setBounds(170, 80, 810, 210);
 
-        jPanel1.add(transactiongraph);
-        transactiongraph.setBounds(230, 380, 340, 200);
-
-        jPanel3.setBackground(new java.awt.Color(246, 244, 235));
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel3MouseClicked(evt);
+            }
+        });
         jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel25.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel25.setIcon(new javax.swing.ImageIcon(getClass().getResource("/media/icons8-bell-30.png"))); // NOI18N
-        jPanel3.add(jLabel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 30, 40));
+        jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/media/icons8-bell-30.png"))); // NOI18N
+        jPanel3.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 40, 40));
 
         jPanel1.add(jPanel3);
-        jPanel3.setBounds(880, 30, 40, 40);
+        jPanel3.setBounds(690, 20, 40, 40);
 
-        jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/media/admindashboard.png"))); // NOI18N
-        jLabel12.setText("jLabel12");
-        jPanel1.add(jLabel12);
-        jLabel12.setBounds(170, 0, 810, 610);
+        jPanel4.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        date_disp.setFont(new java.awt.Font("SansSerif", 1, 15)); // NOI18N
+        date_disp.setForeground(new java.awt.Color(120, 160, 131));
+        date_disp.setText("dd/mm/yyyy");
+        jPanel4.add(date_disp, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 100, 40));
+
+        time_disp.setFont(new java.awt.Font("SansSerif", 0, 15)); // NOI18N
+        time_disp.setForeground(new java.awt.Color(120, 160, 131));
+        time_disp.setText("hh-mm-ss");
+        jPanel4.add(time_disp, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 0, 80, 40));
+
+        jPanel1.add(jPanel4);
+        jPanel4.setBounds(790, 20, 170, 40);
+
+        jSeparator1.setForeground(new java.awt.Color(120, 160, 131));
+        jPanel1.add(jSeparator1);
+        jSeparator1.setBounds(180, 70, 790, 10);
+
+        jPanel7.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel7.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel7MouseClicked(evt);
+            }
+        });
+        jPanel7.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/media/icons8-logs-folder-30.png"))); // NOI18N
+        jPanel7.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 40, 40));
+
+        jPanel1.add(jPanel7);
+        jPanel7.setBounds(740, 20, 40, 40);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -852,19 +929,8 @@ public class adminMain extends javax.swing.JFrame {
         Session sess = Session.getInstance();
         userLog.setText(sess.getFname() + " " + sess.getLname());
         codeLog.setText(sess.getCode());
+        header.setText("Hello, "+ sess.getFname()+ "!");
     }//GEN-LAST:event_formWindowActivated
-
-    private void searchbarMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchbarMouseReleased
-        // TODO add your handling code here:
-    }//GEN-LAST:event_searchbarMouseReleased
-
-    private void searchbarPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_searchbarPropertyChange
-
-    }//GEN-LAST:event_searchbarPropertyChange
-
-    private void searchbuttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchbuttonMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_searchbuttonMouseClicked
 
     private void jPanel21MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel21MouseClicked
         staffPanel();
@@ -889,6 +955,37 @@ public class adminMain extends javax.swing.JFrame {
             jLabel21.setForeground(text1color);
         }
     }//GEN-LAST:event_jPanel17MouseExited
+
+    private void jPanel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MouseClicked
+        admin_profile prof = new admin_profile();
+        desktop.setVisible(true);
+        desktop.add(prof).setVisible(true);
+        
+    }//GEN-LAST:event_jPanel2MouseClicked
+
+    private void jPanel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel7MouseClicked
+        desktop.setVisible(true);
+        admin_logs up = new admin_logs();
+        desktop.add(up).setVisible(true);
+        jPanel4.setVisible(false);
+    }//GEN-LAST:event_jPanel7MouseClicked
+
+    private void jPanel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel3MouseClicked
+        GlassPanePopup.showPopup(new notif(),new DefaultOption(){
+            @Override
+                public float opacity(){
+                    return 0;
+                }
+        });
+    }//GEN-LAST:event_jPanel3MouseClicked
+
+    private void jPanel19MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel19MouseClicked
+        customersPanel();
+    }//GEN-LAST:event_jPanel19MouseClicked
+
+    private void jPanel9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel9MouseClicked
+        discountsPanel();
+    }//GEN-LAST:event_jPanel9MouseClicked
 
     /**
      * @param args the command line arguments
@@ -927,7 +1024,9 @@ public class adminMain extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel codeLog;
+    private javax.swing.JLabel date_disp;
     private javax.swing.JDesktopPane desktop;
+    private javax.swing.JLabel header;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -961,22 +1060,23 @@ public class adminMain extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel15;
     private javax.swing.JPanel jPanel16;
     private javax.swing.JPanel jPanel17;
-    private javax.swing.JPanel jPanel18;
     private javax.swing.JPanel jPanel19;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel20;
     private javax.swing.JPanel jPanel21;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel9;
+    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel numcustomer;
     private javax.swing.JLabel numdiscounts;
     private javax.swing.JLabel numprod;
-    private javax.swing.JLabel numsales;
     private javax.swing.JLabel numstaff;
     private javax.swing.JPanel salesgraph;
-    private javax.swing.JTextField searchbar;
-    private javax.swing.JPanel searchbutton;
+    private javax.swing.JLabel time_disp;
     private javax.swing.JPanel transactiongraph;
     private javax.swing.JLabel userLog;
     // End of variables declaration//GEN-END:variables

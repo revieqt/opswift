@@ -3,38 +3,70 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/enhance/CustomPF.java</file>
+            <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/imported_img/4.png</file>
+            <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/accounting/accounting_staff.java</file>
             <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/config/dbConnector.java</file>
             <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/admin/admin_productsAdd.java</file>
-            <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/admin/admin_archive.java</file>
             <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/config/Session.java</file>
-            <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/admin/admin_products.java</file>
-            <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/config/TransactionGraph.java</file>
-            <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/cashier/cashier_dashboard.java</file>
+            <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/config/ImportImages.java</file>
+            <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/build.xml</file>
             <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/cashier/cashierMain.java</file>
+            <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/nbproject/project.xml</file>
+            <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/enhance/RoundBorder_g.java</file>
+            <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/accounting/accounting_customers.java</file>
             <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/config/SalesGraph.java</file>
-            <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/config/passwordHasher.java</file>
-            <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/cashier/cashier_profile.java</file>
+            <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/admin/admin_profile.java</file>
             <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/admin/admin_customersAdd.java</file>
+            <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/print/PanelPrinter.java</file>
             <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/admin/admin_productsEdit.java</file>
             <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/login/loginForm.java</file>
-            <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/admin/admin_staff.java</file>
             <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/enhance/CustomTF.java</file>
-            <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/cashier/cashier_checkout.java</file>
-            <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/admin/admin_staffAdd.java</file>
+            <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/nbproject/build-impl.xml</file>
             <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/admin/admin_sales.java</file>
+            <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/enhance/RoundPanel_w.java</file>
             <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/config/TableQueries.java</file>
-            <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/login/superAdmin.java</file>
-            <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/admin/admin_staffEdit.java</file>
-            <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/admin/admin_settings.java</file>
-            <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/reciept/ReceiptPrinter.java</file>
+            <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/admin/admin_customersEdit.java</file>
+            <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/admin/admin_salesView.java</file>
             <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/admin/admin_discounts.java</file>
-            <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/cashier/cashier_products.java</file>
-            <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/enhance/ColorPicker.java</file>
-            <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/admin/adminMain.java</file>
             <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/enhance/CustomJDate.java</file>
             <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/admin/admin_customers.java</file>
             <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/enhance/RoundPanel_lb.java</file>
+            <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/nbproject/project.properties</file>
+            <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/nbproject/genfiles.properties</file>
+            <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/enhance/CustomPF.java</file>
+            <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/admin/admin_archive.java</file>
+            <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/cashier/cashier_salesView.java</file>
+            <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/admin/admin_products.java</file>
+            <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/print/TablePrinter.java</file>
+            <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/config/TransactionGraph.java</file>
+            <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/.gitignore</file>
+            <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/cashier/cashier_sales.java</file>
+            <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/accounting/accounting_discounts.java</file>
+            <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/manifest.mf</file>
+            <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/config/passwordHasher.java</file>
+            <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/enhance/RoundBorder_w.java</file>
+            <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/accounting/accounting_products.java</file>
+            <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/admin/admin_logs.java</file>
+            <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/admin/admin_discountsAdd.java</file>
+            <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/admin/admin_staff.java</file>
+            <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/accounting/accounting_profile.java</file>
+            <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/cashier/cashier_checkout.java</file>
+            <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/admin/admin_staffAdd.java</file>
+            <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/enhance/CircularImageLabel.java</file>
+            <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/login/superAdmin.java</file>
+            <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/admin/admin_staffEdit.java</file>
+            <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/admin/admin_settings.java</file>
+            <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/admin/admin_IDPrinting.java</file>
+            <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/enhance/RoundPanel.java</file>
+            <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/enhance/notif.java</file>
+            <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/print/ReceiptPrinter.java</file>
+            <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/admin/admin_discountsEdit.java</file>
+            <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/imported_img/1.png</file>
+            <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/cashier/cashier_products.java</file>
+            <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/enhance/ColorPicker.java</file>
+            <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/admin/adminMain.java</file>
+            <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/accounting/accountingMain.java</file>
+            <file>file:/C:/Users/w10/Documents/NetBeansProjects/pos_system/src/admin/admin_profileSecurity.java</file>
         </group>
     </open-files>
 </project-private>

@@ -1,27 +1,22 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package admin;
 
 import static admin.adminMain.checkData;
+import config.ImportImages;
 import config.TableQueries;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
-/**
- *
- * @author w10
- */
 public class admin_staffAdd extends javax.swing.JFrame {
 
-    /**
-     * Creates new form admin_staff_add
-     */
     public admin_staffAdd() {
         setUndecorated(true);
         initComponents();
     }
-    
+    ImportImages imp = new ImportImages();
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -31,6 +26,8 @@ public class admin_staffAdd extends javax.swing.JFrame {
         jPanel5 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         lname = new enhance.CustomTF();
+        jPanel8 = new javax.swing.JPanel();
+        jLabel12 = new javax.swing.JLabel();
         jPanel7 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
         username = new enhance.CustomTF();
@@ -45,6 +42,11 @@ public class admin_staffAdd extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jPanel4 = new enhance.RoundBorder_g();
         jLabel7 = new javax.swing.JLabel();
+        jPanel9 = new enhance.RoundBorder_g()
+        ;
+        remove = new javax.swing.JButton();
+        browse = new javax.swing.JButton();
+        img = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -79,6 +81,18 @@ public class admin_staffAdd extends javax.swing.JFrame {
             }
         });
         jPanel2.add(lname, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 250, 40));
+
+        jPanel8.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel8.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel12.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel12.setFont(new java.awt.Font("Nirmala UI", 2, 10)); // NOI18N
+        jLabel12.setForeground(new java.awt.Color(0, 51, 51));
+        jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel12.setText("First Name*");
+        jPanel8.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 70, 20));
+
+        jPanel2.add(jPanel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 10, -1, -1));
 
         jPanel7.setBackground(new java.awt.Color(255, 255, 255));
         jPanel7.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -141,10 +155,10 @@ public class admin_staffAdd extends javax.swing.JFrame {
         jLabel10.setFont(new java.awt.Font("Nirmala UI", 2, 10)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(0, 51, 51));
         jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel10.setText("First Name*");
-        jPanel6.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 70, 20));
+        jLabel10.setText("Identification Photo");
+        jPanel6.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 90, 20));
 
-        jPanel2.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 10, -1, -1));
+        jPanel2.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 10, 110, -1));
 
         fname.setForeground(new java.awt.Color(0, 51, 51));
         fname.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -174,7 +188,7 @@ public class admin_staffAdd extends javax.swing.JFrame {
         jLabel3.setText("Add");
         jPanel3.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 110, 40));
 
-        jPanel2.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 330, 130, 40));
+        jPanel2.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 330, 130, 40));
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
         jPanel4.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -190,10 +204,34 @@ public class admin_staffAdd extends javax.swing.JFrame {
         jLabel7.setText("Back");
         jPanel4.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 110, 40));
 
-        jPanel2.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 330, 130, 40));
+        jPanel2.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 330, 130, 40));
+
+        jPanel9.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel9.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        remove.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        remove.setText("Remove Image");
+        remove.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeActionPerformed(evt);
+            }
+        });
+        jPanel9.add(remove, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 260, 120, 30));
+
+        browse.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        browse.setText("Browse");
+        browse.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                browseActionPerformed(evt);
+            }
+        });
+        jPanel9.add(browse, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 260, 120, 30));
+        jPanel9.add(img, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 250, 240));
+
+        jPanel2.add(jPanel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 20, 270, 300));
 
         jPanel1.add(jPanel2);
-        jPanel2.setBounds(10, 70, 290, 380);
+        jPanel2.setBounds(10, 70, 560, 380);
 
         jLabel1.setFont(new java.awt.Font("Tw Cen MT", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
@@ -205,7 +243,7 @@ public class admin_staffAdd extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 308, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 580, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -254,9 +292,16 @@ public class admin_staffAdd extends javax.swing.JFrame {
         }else{
             if(checkData("*","users","u_username",username.getText())){
                 error.setText("*Username already taken!");
+            }else if(img.getIcon()==null){
+                error.setText("Please insert image!");
             }else{
                 TableQueries user = new TableQueries();
-                user.addUser(fname.getText(), lname.getText(), username.getText(), (String)type.getSelectedItem());
+                user.addUser(fname.getText(), lname.getText(), username.getText(), (String)type.getSelectedItem(), imp.destination);
+                try {
+                    Files.copy(imp.selectedFile.toPath(),new File(imp.destination).toPath(), StandardCopyOption.REPLACE_EXISTING);
+                } catch (IOException ex) {
+                    System.out.println("Image Error: "+ ex);
+                }
                 this.dispose();
             }
         }
@@ -266,6 +311,39 @@ public class admin_staffAdd extends javax.swing.JFrame {
         
         this.dispose();
     }//GEN-LAST:event_jPanel4MouseClicked
+
+    private void browseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseActionPerformed
+        JFileChooser fileChooser = new JFileChooser();
+                int returnValue = fileChooser.showOpenDialog(null);
+                if (returnValue == JFileChooser.APPROVE_OPTION) {
+                    try {
+                        imp.selectedFile = fileChooser.getSelectedFile();
+                        imp.destination = "src/imported_img/" + imp.selectedFile.getName();
+                        imp.path  = imp.selectedFile.getAbsolutePath();
+                        
+                        
+                        if(imp.FileExistenceChecker(imp.path) == 1){
+                          JOptionPane.showMessageDialog(null, "File Already Exist, Rename or Choose another!");
+                            imp.destination = "";
+                            imp.path="";
+                        }else{
+                            img.setIcon(imp.ResizeImage(imp.path, null, img));
+                            browse.setEnabled(false);
+                            remove.setEnabled(true);
+                        }
+                    } catch (Exception ex) {
+                        System.out.println("File Error!");
+                    }
+                }
+    }//GEN-LAST:event_browseActionPerformed
+
+    private void removeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeActionPerformed
+        remove.setEnabled(false);
+        browse.setEnabled(true);
+        img.setIcon(null);
+        imp.destination = "";
+        imp.path = "";
+    }//GEN-LAST:event_removeActionPerformed
 
     /**
      * @param args the command line arguments
@@ -304,11 +382,14 @@ public class admin_staffAdd extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public javax.swing.JButton browse;
     private javax.swing.JLabel error;
     private javax.swing.JTextField fname;
+    private javax.swing.JLabel img;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -321,7 +402,10 @@ public class admin_staffAdd extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
     private javax.swing.JTextField lname;
+    public javax.swing.JButton remove;
     private javax.swing.JComboBox<String> type;
     private javax.swing.JTextField username;
     // End of variables declaration//GEN-END:variables

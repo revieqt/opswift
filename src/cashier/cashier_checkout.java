@@ -1,32 +1,32 @@
 package cashier;
 
+import print.ReceiptPrinter;
 import config.Session;
 import config.dbConnector;
 import java.awt.Color;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import reciept.*;
 
 public class cashier_checkout extends javax.swing.JFrame {
     static DefaultTableModel dummymodel;
     static String dummytotal;
     public DefaultTableModel mdl;
     public String sub;
-    public double vat;
     public boolean applyDiscount = false;
     public double dis;
     public double grandtotal;
     public double payment;
     public double change;
+    public String customer;
     
-    public cashier_checkout(DefaultTableModel model, String total) {
+    public cashier_checkout(DefaultTableModel model, String total, String customer) {
         initComponents();
         this.mdl = model;
         this.sub = total;
+        this.customer = customer;
         setCheckout(mdl,sub);
     }
     
@@ -40,19 +40,12 @@ public class cashier_checkout extends javax.swing.JFrame {
 
     public void setCheckout(DefaultTableModel model, String total){
         dbConnector connect = new dbConnector();
-        this.vat = Double.parseDouble(this.sub) * 0.12;
-        this.sub = String.format("%.2f", (Double.parseDouble(this.sub) - this.vat));
         subtotal_disp.setText(this.sub);
-        vat_disp.setText(String.format("%.2f", this.vat));
-        try {
-            transactionid_disp.setText(String.valueOf(connect.getLastId("t_id", "transactions")));
-        } catch (SQLException ex) {
-            System.out.println("Invalid");
-        }
+        transactionid_disp.setText("TR# "+connect.lastId("t_id", "transactions"));
         if(!applyDiscount){
             discount_disp.setText("- 0.00");
         }
-        this.grandtotal = Double.parseDouble(this.sub) + this.vat + this.dis;
+        this.grandtotal = Double.parseDouble(this.sub);
         grandtotal_disp.setText(String.format("%.2f", this.grandtotal));
         
     }
@@ -69,11 +62,15 @@ public class cashier_checkout extends javax.swing.JFrame {
     public void checkout(DefaultTableModel model){
         dbConnector connect = new dbConnector();
         Session sess = Session.getInstance();
-        LocalDateTime currentDateTime = LocalDateTime.now();
+        try{
+        String query = "";
         
-        try {
-            String query = "INSERT INTO transactions (t_staff, t_customer, t_total, t_datetime) VALUES ("+sess.getId() +", 3001, "+grandtotal+", '"+currentDateTime+"')";
-            connect.insertData(query);
+        if(customer.equals("Guest!")){
+            query = "INSERT INTO transactions (t_staff, t_total) VALUES ("+sess.getId() +", "+grandtotal+")";
+        }else{
+            query = "INSERT INTO transactions (t_staff, t_customer, t_total) VALUES ("+sess.getId() +", "+customer+", "+grandtotal+")";
+        }
+        connect.insertData(query);
         } catch (SQLException ex) {
             System.out.println("Error inserting data: " + ex.getMessage());
         }
@@ -101,25 +98,23 @@ public class cashier_checkout extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel4 = new enhance.RoundBorder_w();
         grandtotal_disp = new javax.swing.JLabel();
-        vat_disp = new javax.swing.JLabel();
         discount_disp = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
         subtotal_disp = new javax.swing.JLabel();
-        jLabel16 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
-        jLabel1 = new javax.swing.JLabel();
-        cash = new enhance.CustomTF();
-        proceed = new javax.swing.JButton();
+        cash = new javax.swing.JTextField();
+        discount_button = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jPanel2 = new enhance.RoundBorder_g();
         jLabel3 = new javax.swing.JLabel();
         jPanel3 = new enhance.RoundPanel_lb();
         jLabel4 = new javax.swing.JLabel();
+        transactionid_disp = new javax.swing.JLabel();
+        jPanel5 = new enhance.RoundPanel_w();
+        error = new javax.swing.JLabel();
         change_disp = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
-        jSeparator2 = new javax.swing.JSeparator();
-        transactionid_disp = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -133,17 +128,12 @@ public class cashier_checkout extends javax.swing.JFrame {
         grandtotal_disp.setForeground(new java.awt.Color(255, 255, 255));
         grandtotal_disp.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         grandtotal_disp.setText("00.00");
-        jPanel4.add(grandtotal_disp, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 110, 180, 60));
-
-        vat_disp.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        vat_disp.setForeground(new java.awt.Color(255, 255, 255));
-        vat_disp.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jPanel4.add(vat_disp, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 40, 100, 30));
+        jPanel4.add(grandtotal_disp, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 80, 180, 60));
 
         discount_disp.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         discount_disp.setForeground(new java.awt.Color(255, 255, 255));
         discount_disp.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jPanel4.add(discount_disp, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 70, 90, 30));
+        jPanel4.add(discount_disp, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 40, 90, 30));
 
         jLabel15.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         jLabel15.setForeground(new java.awt.Color(255, 255, 255));
@@ -155,35 +145,20 @@ public class cashier_checkout extends javax.swing.JFrame {
         subtotal_disp.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jPanel4.add(subtotal_disp, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 10, 100, 30));
 
-        jLabel16.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        jLabel16.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel16.setText("VAT Tax:");
-        jPanel4.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 110, 30));
-
         jLabel17.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         jLabel17.setForeground(new java.awt.Color(255, 255, 255));
         jLabel17.setText("Discounts/Coupons:");
-        jPanel4.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 130, 30));
-        jPanel4.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 110, 230, 20));
+        jPanel4.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 130, 30));
+        jPanel4.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 230, 20));
 
         jPanel1.add(jPanel4);
-        jPanel4.setBounds(20, 110, 250, 170);
-
-        jLabel1.setFont(new java.awt.Font("Tw Cen MT", 1, 24)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/media/icon_back.png"))); // NOI18N
-        jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel1MouseClicked(evt);
-            }
-        });
-        jPanel1.add(jLabel1);
-        jLabel1.setBounds(10, 20, 40, 40);
+        jPanel4.setBounds(20, 100, 250, 140);
 
         cash.setBackground(new java.awt.Color(80, 114, 123));
         cash.setFont(new java.awt.Font("SansSerif", 1, 36)); // NOI18N
         cash.setForeground(new java.awt.Color(255, 255, 255));
         cash.setHorizontalAlignment(javax.swing.JTextField.TRAILING);
+        cash.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         cash.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 cashKeyPressed(evt);
@@ -196,23 +171,23 @@ public class cashier_checkout extends javax.swing.JFrame {
             }
         });
         jPanel1.add(cash);
-        cash.setBounds(20, 290, 250, 50);
+        cash.setBounds(20, 250, 250, 50);
 
-        proceed.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
-        proceed.setText("Add Discount");
-        proceed.addActionListener(new java.awt.event.ActionListener() {
+        discount_button.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        discount_button.setText("Add Discount");
+        discount_button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                proceedActionPerformed(evt);
+                discount_buttonActionPerformed(evt);
             }
         });
-        jPanel1.add(proceed);
-        proceed.setBounds(170, 70, 100, 30);
+        jPanel1.add(discount_button);
+        discount_button.setBounds(20, 60, 250, 30);
 
         jLabel2.setFont(new java.awt.Font("Tw Cen MT", 1, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Checkout");
         jPanel1.add(jLabel2);
-        jLabel2.setBounds(40, 20, 160, 40);
+        jLabel2.setBounds(20, 20, 160, 40);
 
         jPanel2.setBackground(new java.awt.Color(80, 114, 123));
         jPanel2.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -228,7 +203,7 @@ public class cashier_checkout extends javax.swing.JFrame {
         jPanel2.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, 20));
 
         jPanel1.add(jPanel2);
-        jPanel2.setBounds(20, 380, 120, 40);
+        jPanel2.setBounds(20, 400, 120, 40);
 
         jPanel3.setBackground(new java.awt.Color(80, 114, 123));
         jPanel3.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -245,51 +220,87 @@ public class cashier_checkout extends javax.swing.JFrame {
         jPanel3.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 80, 20));
 
         jPanel1.add(jPanel3);
-        jPanel3.setBounds(150, 380, 120, 40);
+        jPanel3.setBounds(150, 400, 120, 40);
 
-        change_disp.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        transactionid_disp.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        transactionid_disp.setForeground(new java.awt.Color(255, 255, 255));
+        transactionid_disp.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        transactionid_disp.setText("#TR-00000001");
+        jPanel1.add(transactionid_disp);
+        transactionid_disp.setBounds(430, 20, 130, 40);
+
+        jPanel5.setBackground(new java.awt.Color(80, 114, 123));
+        jPanel5.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        error.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
+        error.setForeground(new java.awt.Color(153, 0, 0));
+        error.setText(".");
+        jPanel5.add(error, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 300, 190, 20));
+
+        jPanel1.add(jPanel5);
+        jPanel5.setBounds(290, 60, 270, 380);
+
+        change_disp.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
         change_disp.setForeground(new java.awt.Color(255, 255, 255));
         change_disp.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         change_disp.setText("00.00");
         jPanel1.add(change_disp);
-        change_disp.setBounds(180, 350, 90, 19);
+        change_disp.setBounds(180, 320, 90, 40);
 
         jLabel19.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         jLabel19.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel19.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel19.setText("Change:");
         jPanel1.add(jLabel19);
-        jLabel19.setBounds(20, 350, 90, 19);
-        jPanel1.add(jSeparator2);
-        jSeparator2.setBounds(20, 60, 250, 2);
-
-        transactionid_disp.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        transactionid_disp.setForeground(new java.awt.Color(255, 255, 255));
-        transactionid_disp.setText("#TR-00000001");
-        jPanel1.add(transactionid_disp);
-        transactionid_disp.setBounds(20, 70, 130, 30);
+        jLabel19.setBounds(210, 300, 60, 30);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 292, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 580, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 452, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 459, Short.MAX_VALUE)
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void proceedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_proceedActionPerformed
-        
-    }//GEN-LAST:event_proceedActionPerformed
-
-    private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
-        this.dispose();
-    }//GEN-LAST:event_jLabel1MouseClicked
+dbConnector connect = new dbConnector();
+    private void discount_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_discount_buttonActionPerformed
+        String discount = JOptionPane.showInputDialog(null, "Enter Discount Code:");
+        try {
+            ResultSet rs = connect.getData("SELECT * FROM discounts WHERE d_code = '"+discount+"'");
+            if(rs.next()){
+                if(rs.getString("d_redeemabletype").equals("Redeem on Transaction")){
+                    if(rs.getString("d_status").equals("Active")){
+                        discount_button.setText("Applied: "+rs.getString("d_name"));
+                        connect.updateData("UPDATE discounts SET d_redeemable = d_redeemable - 1 WHERE d_code = '"+discount+"'");
+                        JOptionPane.showMessageDialog(null, "Discount redeemed successfully!");
+                        if(rs.getString("d_type").equals("Percent")){
+                            discount_disp.setText("-"+(Double.parseDouble(this.sub) * (rs.getDouble("d_amount") / 100.0))+ " ("+rs.getDouble("d_amount")+"%)");
+                            this.grandtotal =Double.parseDouble(this.sub)-(Double.parseDouble(this.sub) * (rs.getDouble("d_amount") / 100.0));
+                            grandtotal_disp.setText(""+this.grandtotal);
+                        }else{
+                            discount_disp.setText("-"+rs.getDouble("d_amount"));
+                            this.grandtotal = Double.parseDouble(this.sub)-rs.getDouble("d_amount");
+                            grandtotal_disp.setText(""+this.grandtotal);
+                        }
+                    }else{
+                        JOptionPane.showMessageDialog(null, "Discount currently unavailable!");
+                    }
+                }else{
+                    JOptionPane.showMessageDialog(null, "Discount not covered!");
+                }
+            }else{
+                JOptionPane.showMessageDialog(null, "Invalid Discount Code!");
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+    }//GEN-LAST:event_discount_buttonActionPerformed
 
     private void jPanel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel3MouseClicked
         if(cash.getText().isEmpty()){
@@ -394,11 +405,11 @@ double payment = 0.0;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField cash;
     private javax.swing.JLabel change_disp;
+    private javax.swing.JButton discount_button;
     private javax.swing.JLabel discount_disp;
+    private javax.swing.JLabel error;
     private javax.swing.JLabel grandtotal_disp;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
@@ -408,11 +419,9 @@ double payment = 0.0;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JButton proceed;
     private javax.swing.JLabel subtotal_disp;
     private javax.swing.JLabel transactionid_disp;
-    private javax.swing.JLabel vat_disp;
     // End of variables declaration//GEN-END:variables
 }

@@ -1,25 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package admin;
 
 import static admin.adminMain.checkData;
 import config.TableQueries;
-import config.dbConnector;
-import java.sql.SQLException;
-import javax.swing.JOptionPane;
 
-/**
- *
- * @author w10
- */
 public class admin_productsAdd extends javax.swing.JFrame {
 
-    /**
-     * Creates new form admin_staff_add
-     */
     public admin_productsAdd() {
         setUndecorated(true);
         initComponents();

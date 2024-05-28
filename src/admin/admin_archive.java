@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package admin;
 
 import config.dbConnector;
@@ -20,10 +15,6 @@ import javax.swing.table.TableModel;
 import net.proteanit.sql.DbUtils;
 import config.TableQueries;
 
-/**
- *
- * @author w10
- */
 public class admin_archive extends javax.swing.JInternalFrame {
 
     public admin_archive() {
@@ -326,25 +317,35 @@ public class admin_archive extends javax.swing.JInternalFrame {
     private void jPanel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel4MouseClicked
         int choose = archive_table.getSelectedRow();
         TableModel model = archive_table.getModel();
-        Object value = model.getValueAt(choose, 0);
-        String id = value.toString();
-        String table;
-        String var;
-        if(type.getSelectedItem().equals("Staff")){
-            table = "users";
-            var = "u_id";
-        }else if(type.getSelectedItem().equals("Products")){
-            table = "products";
-            var = "p_id";
-        }else if(type.getSelectedItem().equals("Customers")){
-            table = "customers";
-            var = "c_id";
+        
+        
+        if(choose != -1){
+            Object value = model.getValueAt(choose, 0);
+            String id = value.toString();
+            String table;
+            String var;
+            if(type.getSelectedItem().equals("Staff")){
+                table = "users";
+                var = "u_id";
+            }else if(type.getSelectedItem().equals("Products")){
+                table = "products";
+                var = "p_id";
+            }else if(type.getSelectedItem().equals("Customers")){
+                table = "customers";
+                var = "c_id";
+            }else{
+                table = "discounts";
+                var = "d_id";
+            }
+            
+            int confirm = JOptionPane.showConfirmDialog(null,"Are you sure to delete ID "+id +"?");
+            if(confirm == JOptionPane.YES_OPTION){
+                dbConnector connect = new dbConnector();
+                connect.deleteData(Integer.parseInt(id), table, var);
+            }
         }else{
-            table = "discounts";
-            var = "d_id";
+            JOptionPane.showMessageDialog(null, "Please select an ID to Delete!");
         }
-        dbConnector connect = new dbConnector();
-        connect.deleteData(Integer.parseInt(id), table, var);
     }//GEN-LAST:event_jPanel4MouseClicked
 
     private void jPanel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel3MouseClicked

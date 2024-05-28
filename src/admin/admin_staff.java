@@ -1,34 +1,29 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package admin;
 
+import config.ImportImages;
 import config.TableQueries;
 import config.dbConnector;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+import net.connectcode.Code128Auto;
 import net.proteanit.sql.DbUtils;
+import print.TablePrinter;
 
-/**
- *
- * @author w10
- */
 public class admin_staff extends javax.swing.JInternalFrame {
 
-    /**
-     * Creates new form admin_staff
-     */
     public admin_staff() {
         initComponents();
         
@@ -58,15 +53,28 @@ public class admin_staff extends javax.swing.JInternalFrame {
         this.getRootPane().getActionMap().put("HOME_pressed", updateAction);
     }
     
+    ImportImages imp = new ImportImages();
     
-    
-    
+    dbConnector connect = new dbConnector();
     public void displayTable(String id, String type, String status) {
         try {
-            dbConnector connector = new dbConnector();
             String query = constructQuery(id, type, status);
-            ResultSet rs = connector.getData(query);
-            staff_table.setModel(DbUtils.resultSetToTableModel(rs));
+            ResultSet rs = connect.getData(query);
+            DefaultTableModel tblmod = (DefaultTableModel)staff_table.getModel();
+            tblmod.setRowCount(0);
+            while(rs.next()){
+                String dbId = String.valueOf(rs.getInt("u_id"));
+                String dbCode = rs.getString("u_code");
+                String dbFname = rs.getString("u_fname");
+                String dbLname = rs.getString("u_lname");
+                String dbUsername = rs.getString("u_username");
+                String dbType = rs.getString("u_type");
+                String dbStatus = rs.getString("u_status");
+                
+                String table[] = {dbId, dbCode, dbFname, dbLname, dbUsername, dbType, dbStatus};
+                
+                tblmod.addRow(table);
+            }
         } catch (SQLException ex) {
             System.out.println("Error: " + ex.getMessage());
         }
@@ -115,6 +123,8 @@ public class admin_staff extends javax.swing.JInternalFrame {
             admin_staffEdit open = new admin_staffEdit();
             open.setVisible(true);
             open.accessTable(model, rowid);
+            open.browse.setEnabled(false);
+            open.remove.setEnabled(true);
         }else{
             JOptionPane.showMessageDialog(this, "Please select a staff!");
         }
@@ -136,25 +146,25 @@ public class admin_staff extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         staff_table = new javax.swing.JTable();
         jPanel6 = new enhance.RoundBorder_g();
-        jLabel22 = new javax.swing.JLabel();
-        type_disp = new javax.swing.JLabel();
-        jLabel24 = new javax.swing.JLabel();
-        jLabel25 = new javax.swing.JLabel();
-        jLabel26 = new javax.swing.JLabel();
-        jLabel27 = new javax.swing.JLabel();
-        jLabel29 = new javax.swing.JLabel();
-        code_disp = new javax.swing.JLabel();
-        name_disp = new javax.swing.JLabel();
-        username_disp = new javax.swing.JLabel();
-        password_disp = new javax.swing.JLabel();
         jLabel21 = new javax.swing.JLabel();
         jSeparator4 = new javax.swing.JSeparator();
         jLabel44 = new javax.swing.JLabel();
         jLabel45 = new javax.swing.JLabel();
-        jLabel46 = new javax.swing.JLabel();
-        status_disp = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
         jLabel30 = new javax.swing.JLabel();
+        jLabel29 = new javax.swing.JLabel();
+        jLabel24 = new javax.swing.JLabel();
+        jLabel25 = new javax.swing.JLabel();
+        jLabel27 = new javax.swing.JLabel();
+        jLabel46 = new javax.swing.JLabel();
         id_disp = new javax.swing.JLabel();
+        status_disp = new javax.swing.JLabel();
+        username_disp = new javax.swing.JLabel();
+        name_disp = new javax.swing.JLabel();
+        code_disp = new javax.swing.JLabel();
+        type_disp = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        img = new javax.swing.JLabel();
         jPanel7 = new enhance.RoundPanel();
         jLabel6 = new javax.swing.JLabel();
         sortID = new javax.swing.JComboBox<>();
@@ -167,7 +177,7 @@ public class admin_staff extends javax.swing.JInternalFrame {
         searchbutton = new enhance.RoundBorder_g();
         jLabel9 = new javax.swing.JLabel();
         jLabel28 = new javax.swing.JLabel();
-        jLabel31 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
 
         main_panel.setBackground(new java.awt.Color(246, 244, 235));
         main_panel.setLayout(null);
@@ -194,6 +204,29 @@ public class admin_staff extends javax.swing.JInternalFrame {
 
         staff_table.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
         staff_table.setForeground(new java.awt.Color(53, 55, 75));
+        staff_table.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID", "Code", "First Name", "Last Name", "Username", "Type", "Status"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         staff_table.setGridColor(new java.awt.Color(255, 255, 255));
         staff_table.setSelectionBackground(new java.awt.Color(120, 160, 131));
         staff_table.getTableHeader().setReorderingAllowed(false);
@@ -214,61 +247,21 @@ public class admin_staff extends javax.swing.JInternalFrame {
             }
         });
         jScrollPane1.setViewportView(staff_table);
+        if (staff_table.getColumnModel().getColumnCount() > 0) {
+            staff_table.getColumnModel().getColumn(0).setResizable(false);
+            staff_table.getColumnModel().getColumn(1).setResizable(false);
+            staff_table.getColumnModel().getColumn(2).setResizable(false);
+            staff_table.getColumnModel().getColumn(3).setResizable(false);
+            staff_table.getColumnModel().getColumn(4).setResizable(false);
+            staff_table.getColumnModel().getColumn(5).setResizable(false);
+            staff_table.getColumnModel().getColumn(6).setResizable(false);
+        }
 
         main_panel.add(jScrollPane1);
-        jScrollPane1.setBounds(30, 120, 490, 460);
+        jScrollPane1.setBounds(30, 120, 490, 470);
 
         jPanel6.setBackground(new java.awt.Color(255, 255, 255));
         jPanel6.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel22.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel22.setIcon(new javax.swing.ImageIcon(getClass().getResource("/media/icon_userbig.png"))); // NOI18N
-        jPanel6.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, 250, -1));
-
-        type_disp.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        type_disp.setForeground(new java.awt.Color(80, 114, 123));
-        jPanel6.add(type_disp, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 260, 140, -1));
-
-        jLabel24.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        jLabel24.setForeground(new java.awt.Color(52, 73, 85));
-        jLabel24.setText("Staff Name:");
-        jPanel6.add(jLabel24, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 200, 70, -1));
-
-        jLabel25.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        jLabel25.setForeground(new java.awt.Color(52, 73, 85));
-        jLabel25.setText("Username:");
-        jPanel6.add(jLabel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 220, 70, -1));
-
-        jLabel26.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        jLabel26.setForeground(new java.awt.Color(52, 73, 85));
-        jLabel26.setText("Password:");
-        jPanel6.add(jLabel26, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 240, 70, -1));
-
-        jLabel27.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        jLabel27.setForeground(new java.awt.Color(52, 73, 85));
-        jLabel27.setText("Type:");
-        jPanel6.add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 260, 70, -1));
-
-        jLabel29.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        jLabel29.setForeground(new java.awt.Color(52, 73, 85));
-        jLabel29.setText("Staff Code:");
-        jPanel6.add(jLabel29, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 180, 70, -1));
-
-        code_disp.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        code_disp.setForeground(new java.awt.Color(80, 114, 123));
-        jPanel6.add(code_disp, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 180, 140, -1));
-
-        name_disp.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        name_disp.setForeground(new java.awt.Color(80, 114, 123));
-        jPanel6.add(name_disp, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 200, 140, -1));
-
-        username_disp.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        username_disp.setForeground(new java.awt.Color(80, 114, 123));
-        jPanel6.add(username_disp, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 220, 140, -1));
-
-        password_disp.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        password_disp.setForeground(new java.awt.Color(80, 114, 123));
-        jPanel6.add(password_disp, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 240, 140, -1));
 
         jLabel21.setFont(new java.awt.Font("Tw Cen MT", 0, 18)); // NOI18N
         jLabel21.setForeground(new java.awt.Color(52, 73, 85));
@@ -297,26 +290,79 @@ public class admin_staff extends javax.swing.JInternalFrame {
         });
         jPanel6.add(jLabel45, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 20, -1, -1));
 
-        jLabel46.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        jLabel46.setForeground(new java.awt.Color(52, 73, 85));
-        jLabel46.setText("Status:");
-        jPanel6.add(jLabel46, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 280, 70, -1));
-
-        status_disp.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        status_disp.setForeground(new java.awt.Color(80, 114, 123));
-        jPanel6.add(status_disp, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 280, 140, -1));
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel30.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jLabel30.setForeground(new java.awt.Color(52, 73, 85));
         jLabel30.setText("Staff ID:");
-        jPanel6.add(jLabel30, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 160, 70, -1));
+        jPanel1.add(jLabel30, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 70, -1));
+
+        jLabel29.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        jLabel29.setForeground(new java.awt.Color(52, 73, 85));
+        jLabel29.setText("Staff Code:");
+        jPanel1.add(jLabel29, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 20, 70, -1));
+
+        jLabel24.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        jLabel24.setForeground(new java.awt.Color(52, 73, 85));
+        jLabel24.setText("Staff Name:");
+        jPanel1.add(jLabel24, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 40, 70, -1));
+
+        jLabel25.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        jLabel25.setForeground(new java.awt.Color(52, 73, 85));
+        jLabel25.setText("Username:");
+        jPanel1.add(jLabel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, 70, -1));
+
+        jLabel27.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        jLabel27.setForeground(new java.awt.Color(52, 73, 85));
+        jLabel27.setText("Type:");
+        jPanel1.add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 80, 70, -1));
+
+        jLabel46.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        jLabel46.setForeground(new java.awt.Color(52, 73, 85));
+        jLabel46.setText("Status:");
+        jPanel1.add(jLabel46, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 100, 70, -1));
 
         id_disp.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         id_disp.setForeground(new java.awt.Color(80, 114, 123));
-        jPanel6.add(id_disp, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 160, 140, -1));
+        jPanel1.add(id_disp, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 0, 140, -1));
+
+        status_disp.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        status_disp.setForeground(new java.awt.Color(80, 114, 123));
+        jPanel1.add(status_disp, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 100, 140, -1));
+
+        username_disp.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        username_disp.setForeground(new java.awt.Color(80, 114, 123));
+        jPanel1.add(username_disp, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 60, 140, -1));
+
+        name_disp.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        name_disp.setForeground(new java.awt.Color(80, 114, 123));
+        jPanel1.add(name_disp, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 40, 140, -1));
+
+        code_disp.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        code_disp.setForeground(new java.awt.Color(80, 114, 123));
+        jPanel1.add(code_disp, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 20, 140, -1));
+
+        type_disp.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        type_disp.setForeground(new java.awt.Color(80, 114, 123));
+        jPanel1.add(type_disp, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 80, 140, -1));
+
+        jButton1.setText("Print Identification Card");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 120, 210, -1));
+
+        jPanel6.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 170, 220, 150));
+
+        img.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        img.setIcon(new javax.swing.ImageIcon(getClass().getResource("/media/icon_userbig.png"))); // NOI18N
+        jPanel6.add(img, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 60, 100, -1));
 
         main_panel.add(jPanel6);
-        jPanel6.setBounds(530, 80, 250, 320);
+        jPanel6.setBounds(530, 80, 250, 330);
 
         jPanel7.setBackground(new java.awt.Color(246, 244, 235));
         jPanel7.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -351,7 +397,7 @@ public class admin_staff extends javax.swing.JInternalFrame {
         jPanel7.add(sortStatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 90, 170, 32));
 
         main_panel.add(jPanel7);
-        jPanel7.setBounds(530, 410, 250, 170);
+        jPanel7.setBounds(530, 420, 250, 170);
 
         searchbar.setForeground(new java.awt.Color(53, 55, 75));
         searchbar.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(120, 160, 131), 1, true));
@@ -402,11 +448,15 @@ public class admin_staff extends javax.swing.JInternalFrame {
         main_panel.add(jLabel28);
         jLabel28.setBounds(740, 10, 40, 50);
 
-        jLabel31.setFont(new java.awt.Font("SansSerif", 0, 10)); // NOI18N
-        jLabel31.setForeground(new java.awt.Color(52, 73, 85));
-        jLabel31.setText("*press ↑ and ↓ to navigate table");
-        main_panel.add(jLabel31);
-        jLabel31.setBounds(30, 580, 220, 14);
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/media/icons8-print-35.png"))); // NOI18N
+        jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel2MouseClicked(evt);
+            }
+        });
+        main_panel.add(jLabel2);
+        jLabel2.setBounds(650, 10, 40, 50);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -431,14 +481,24 @@ public class admin_staff extends javax.swing.JInternalFrame {
     private void staff_tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_staff_tableMouseClicked
         int choose = staff_table.getSelectedRow();
         TableModel model = staff_table.getModel();
-
+        
+        try {
+            ResultSet rs = connect.getData("SELECT * FROM users WHERE u_id = "+ model.getValueAt(choose, 0).toString());
+            if(rs.next()){
+                img.setIcon(imp.ResizeImage(rs.getString("u_img"), null, img));
+            }else{
+                System.out.println("No image found!");
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+        
         id_disp.setText(model.getValueAt(choose, 0).toString());
         code_disp.setText(model.getValueAt(choose, 1).toString());
         name_disp.setText((model.getValueAt(choose, 2).toString())+" "+(model.getValueAt(choose, 3).toString()));
         username_disp.setText(model.getValueAt(choose, 4).toString());
-        password_disp.setText(model.getValueAt(choose, 5).toString());
-        type_disp.setText(model.getValueAt(choose, 6).toString());
-        status_disp.setText(model.getValueAt(choose, 7).toString());
+        type_disp.setText(model.getValueAt(choose, 5).toString());
+        status_disp.setText(model.getValueAt(choose, 6).toString());
     }//GEN-LAST:event_staff_tableMouseClicked
 
     private void jLabel44MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel44MouseClicked
@@ -478,9 +538,21 @@ public class admin_staff extends javax.swing.JInternalFrame {
         }
 
         try {
-            dbConnector connect = new dbConnector();
             ResultSet rs = connect.getData(searchQuery);
-            staff_table.setModel(DbUtils.resultSetToTableModel(rs));
+            DefaultTableModel tblmod = (DefaultTableModel)staff_table.getModel();
+            tblmod.setRowCount(0);
+            while(rs.next()){
+                String dbId = String.valueOf(rs.getInt("u_id"));
+                String dbCode = rs.getString("u_code");
+                String dbFname = rs.getString("u_fname");
+                String dbLname = rs.getString("u_lname");
+                String dbUsername = rs.getString("u_username");
+                String dbType = rs.getString("u_type");
+                String dbStatus = rs.getString("u_status");
+                
+                String table[] = {dbId, dbCode, dbFname, dbLname, dbUsername, dbType, dbStatus};
+                tblmod.addRow(table);
+            }
         } catch (SQLException ex) {
             System.out.println("Error searching users: " + ex.getMessage());
         }
@@ -488,7 +560,10 @@ public class admin_staff extends javax.swing.JInternalFrame {
 
     private void jLabel28MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel28MouseClicked
         admin_staffAdd open = new admin_staffAdd();
+        open.browse.setEnabled(true);
+        open.remove.setEnabled(false);
         open.setVisible(true);
+        
     }//GEN-LAST:event_jLabel28MouseClicked
 
     private void staff_tableKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_staff_tableKeyPressed
@@ -504,62 +579,92 @@ public class admin_staff extends javax.swing.JInternalFrame {
         TableModel model = staff_table.getModel();
         
         if(choose!=-1){
+        try {
+            ResultSet rs = connect.getData("SELECT * FROM users WHERE u_id = "+ model.getValueAt(choose, 0).toString());
+            if(rs.next()){
+                img.setIcon(imp.ResizeImage(rs.getString("u_img"), null, img));
+            }else{
+                System.out.println("No image found!");
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
         id_disp.setText(model.getValueAt(choose, 0).toString());
         code_disp.setText(model.getValueAt(choose, 1).toString());
         name_disp.setText((model.getValueAt(choose, 2).toString())+" "+(model.getValueAt(choose, 3).toString()));
         username_disp.setText(model.getValueAt(choose, 4).toString());
-        password_disp.setText(model.getValueAt(choose, 5).toString());
-        type_disp.setText(model.getValueAt(choose, 6).toString());
-        status_disp.setText(model.getValueAt(choose, 7).toString());
+        type_disp.setText(model.getValueAt(choose, 5).toString());
+        status_disp.setText(model.getValueAt(choose, 6).toString());
         }
     }//GEN-LAST:event_staff_tableKeyReleased
 
     private void searchbarKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchbarKeyTyped
-//        String query = searchbar.getText();
-//        String searchQuery = "SELECT * FROM users WHERE u_code LIKE '%" + query + "%' OR u_fname LIKE '%" + query + "%' OR u_lname LIKE '%" + query + "%' OR u_username LIKE '%" + query +"%' OR u_type LIKE '%" + query +"%' OR u_status LIKE '%" + query +"%'";
-//    
-//    
-//        if (query.matches("\\d+")) {
-//            searchQuery = "SELECT * FROM users WHERE u_id = " + query;
-//        }
-//    
-//        try {
-//            dbConnector connect = new dbConnector();
-//            ResultSet rs = connect.getData(searchQuery);
-//            staff_table.setModel(DbUtils.resultSetToTableModel(rs));
-//        } catch(SQLException ex) {
-//            System.out.println("Error searching users: " + ex.getMessage());
-//        }
+
     }//GEN-LAST:event_searchbarKeyTyped
 
     private void searchbarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchbarMouseClicked
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_searchbarMouseClicked
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        int rowid = staff_table.getSelectedRow();
+        TableModel model = staff_table.getModel();
+        
+        if(rowid != -1){
+            admin_IDPrinting open = new admin_IDPrinting();
+            
+            try {
+            ResultSet rs = connect.getData("SELECT * FROM users WHERE u_id = "+ model.getValueAt(rowid, 0).toString());
+            if(rs.next()){
+                open.img.setIcon(imp.ResizeImage(rs.getString("u_img"), null, img));
+            }else{
+                System.out.println("No image found!");
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+            open.lname.setText("<html><body>"+model.getValueAt(rowid, 3).toString()+ ", "+ model.getValueAt(rowid, 2).toString()+"</body></html>");
+            open.type.setText(model.getValueAt(rowid, 5).toString());
+            Code128Auto code128 = new Code128Auto();
+            String barcode=code128.encode(model.getValueAt(rowid, 1).toString());
+            open.barcode.setText(barcode);
+            open.barcode.setFont(new Font("CCode128_S3_Trial", Font.PLAIN, 16));
+            open.setVisible(true);
+        }else{
+            JOptionPane.showMessageDialog(this, "Please select a staff!");
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
+        TablePrinter print = new TablePrinter(staff_table, "Staff");
+        print.print();
+    }//GEN-LAST:event_jLabel2MouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel code_disp;
     private javax.swing.JLabel id_disp;
+    private javax.swing.JLabel img;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
-    private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
-    private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel30;
-    private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel44;
     private javax.swing.JLabel jLabel45;
     private javax.swing.JLabel jLabel46;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
@@ -567,7 +672,6 @@ public class admin_staff extends javax.swing.JInternalFrame {
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JPanel main_panel;
     private javax.swing.JLabel name_disp;
-    private javax.swing.JLabel password_disp;
     private javax.swing.JTextField searchbar;
     private javax.swing.JPanel searchbutton;
     private javax.swing.JComboBox<String> sortID;

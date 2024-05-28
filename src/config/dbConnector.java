@@ -74,12 +74,15 @@ public class dbConnector {
         }
 
     public void deleteData(int id, String table, String var){
+        Session sess = Session.getInstance();
+        TableQueries qr = new TableQueries();
         try{
             PreparedStatement pst = connect.prepareStatement("DELETE FROM "+table+" WHERE "+var+" = ?");
             pst.setInt(1,id);
             int rowsDeleted=pst.executeUpdate();
             if(rowsDeleted >0){
                 JOptionPane.showMessageDialog(null, "Deleted Successfully!");
+                qr.addLogs(sess.getFname()+ " "+ sess.getLname()+ " ("+sess.getId()+") deleted "+id+" from "+table);
             }else{
                 System.out.println("Deletion Failed");
             }
@@ -90,7 +93,7 @@ public class dbConnector {
     }
     
     
-    public int columnCount(String table) {
+    public int archiveCount(String table) {
         int column = 0;
         String var;
         
@@ -154,20 +157,21 @@ public class dbConnector {
         return amount;
     }
     
-//    public double salesCount(String table){
-//        double sales = 0;
-//        try {
-//            String query = "SELECT COUNT(*) FROM " + table;
-//            ResultSet rs = getData(query);
-//            if (rs.next()) {
-//                column = rs.getInt(1);
-//            }
-//        } catch (SQLException ex) {
-//            System.out.println(ex);
-//            
-//        }
-//        
-//        return sales;
-//    }
-
+    public int columnCount(String table, String var){
+        int num = 0;
+        try {
+            ResultSet rs = getData("SELECT COUNT(*) FROM "+table+"");
+            if (rs.next()) {
+                String check = rs.getString(var);
+                if(check.equals("")){
+                    num = 0;
+                }else{
+                    num = rs.getInt(1);
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+        return num;
+    }
 }
