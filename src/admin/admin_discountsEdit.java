@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package admin;
 
 import static admin.adminMain.checkData;
@@ -10,15 +5,8 @@ import config.TableQueries;
 import java.text.SimpleDateFormat;
 import javax.swing.table.TableModel;
 
-/**
- *
- * @author w10
- */
 public class admin_discountsEdit extends javax.swing.JFrame {
 
-    /**
-     * Creates new form admin_staff_add
-     */
     public admin_discountsEdit() {
         setUndecorated(true);
         initComponents();
@@ -72,6 +60,7 @@ public class admin_discountsEdit extends javax.swing.JFrame {
         jPanel8 = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
         code = new enhance.CustomTF();
+        rtype = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -130,7 +119,7 @@ public class admin_discountsEdit extends javax.swing.JFrame {
                 redeemPropertyChange(evt);
             }
         });
-        jPanel2.add(redeem, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 200, 250, 40));
+        jPanel2.add(redeem, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 200, 120, 40));
 
         type.setBackground(new java.awt.Color(44, 88, 110));
         type.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Percent", "Fixed Amount" }));
@@ -248,6 +237,20 @@ public class admin_discountsEdit extends javax.swing.JFrame {
         });
         jPanel2.add(code, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 250, 40));
 
+        rtype.setBackground(new java.awt.Color(44, 88, 110));
+        rtype.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Redeem on Product", "Redeem on Transaction" }));
+        rtype.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rtypeActionPerformed(evt);
+            }
+        });
+        rtype.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                rtypePropertyChange(evt);
+            }
+        });
+        jPanel2.add(rtype, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 200, 120, 40));
+
         jPanel1.add(jPanel2);
         jPanel2.setBounds(10, 70, 290, 380);
 
@@ -322,7 +325,7 @@ public class admin_discountsEdit extends javax.swing.JFrame {
         
         if(proceed){
             TableQueries dis = new TableQueries();
-            dis.updateDiscount(id,code.getText(), name.getText(), Double.parseDouble(amount.getText()), (String)type.getSelectedItem(), Integer.parseInt(redeem.getText()), (String)status.getSelectedItem());
+            dis.updateDiscount(id,code.getText(), name.getText(), Double.parseDouble(amount.getText()), (String)type.getSelectedItem(), Integer.parseInt(redeem.getText()),(String)rtype.getSelectedItem(), (String)status.getSelectedItem());
             this.dispose();
         }
     }//GEN-LAST:event_jPanel3MouseClicked
@@ -347,6 +350,14 @@ public class admin_discountsEdit extends javax.swing.JFrame {
     private void codePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_codePropertyChange
         // TODO add your handling code here:
     }//GEN-LAST:event_codePropertyChange
+
+    private void rtypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rtypeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rtypeActionPerformed
+
+    private void rtypePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_rtypePropertyChange
+        //        type_display.setText((String)type.getSelectedItem());
+    }//GEN-LAST:event_rtypePropertyChange
 
     /**
      * @param args the command line arguments
@@ -411,6 +422,7 @@ public class admin_discountsEdit extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel8;
     private javax.swing.JTextField name;
     private javax.swing.JTextField redeem;
+    private javax.swing.JComboBox<String> rtype;
     private javax.swing.JComboBox<String> status;
     private javax.swing.JComboBox<String> type;
     // End of variables declaration//GEN-END:variables

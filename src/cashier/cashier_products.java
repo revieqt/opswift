@@ -251,8 +251,8 @@ public class cashier_products extends javax.swing.JInternalFrame {
         jLabel6.setFont(new java.awt.Font("Tw Cen MT", 0, 14)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel6.setText("LOGOUT");
-        jPanel4.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 10, 100, 40));
+        jLabel6.setText("Add to Transaction");
+        jPanel4.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 0, 170, 50));
 
         main_panel.add(jPanel4);
         jPanel4.setBounds(530, 530, 250, 50);

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package admin;
 
 import config.TableQueries;
@@ -11,18 +6,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import net.proteanit.sql.DbUtils;
+import print.TablePrinter;
 
-/**
- *
- * @author w10
- */
 public class admin_products extends javax.swing.JInternalFrame {
 
-    /**
-     * Creates new form admin_staff
-     */
     public admin_products() {
         initComponents();
         
@@ -32,24 +22,6 @@ public class admin_products extends javax.swing.JInternalFrame {
         
         displayTable("Lowest to Highest", "All Status");
         
-//        Action insertAction = new AbstractAction() {
-//        @Override
-//            public void actionPerformed(ActionEvent e) {
-//                admin_staff_add open = new admin_staff_add();
-//                open.setVisible(true);
-//            }
-//        };
-//        this.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_INSERT, 0), "INSERT_pressed");
-//        this.getRootPane().getActionMap().put("INSERT_pressed", insertAction);
-//        
-//        Action updateAction = new AbstractAction() {
-//        @Override
-//            public void actionPerformed(ActionEvent e) {
-//                update();
-//            }
-//        };
-//        this.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_HOME, 0), "HOME_pressed");
-//        this.getRootPane().getActionMap().put("HOME_pressed", updateAction);
     }
     
     
@@ -61,8 +33,20 @@ public class admin_products extends javax.swing.JInternalFrame {
         dbConnector connector = new dbConnector();
         String query = constructQuery(id, status);
         ResultSet rs = connector.getData(query);
-        products_table.setModel(DbUtils.resultSetToTableModel(rs));
-
+        DefaultTableModel tblmod = (DefaultTableModel)products_table.getModel();
+            tblmod.setRowCount(0);
+            while(rs.next()){
+                String dbId = String.valueOf(rs.getInt("p_id"));
+                String dbCode = rs.getString("p_barcode");
+                String dbName = rs.getString("p_name");
+                String dbQty = String.valueOf(rs.getString("p_qty"));
+                String dbPrice = String.valueOf(rs.getDouble("p_price"));
+                String dbStatus = rs.getString("p_status");
+                
+                String table[] = {dbId, dbCode, dbName, dbQty, dbPrice, dbStatus};
+                
+                tblmod.addRow(table);
+                }
 
     } catch (SQLException ex) {
         System.out.println("Error: " + ex.getMessage());
@@ -151,7 +135,7 @@ private String constructQuery(String id, String status) {
         searchbutton = new enhance.RoundBorder_g();
         jLabel9 = new javax.swing.JLabel();
         jLabel28 = new javax.swing.JLabel();
-        jLabel31 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
 
         main_panel.setBackground(new java.awt.Color(246, 244, 235));
         main_panel.setLayout(null);
@@ -178,6 +162,29 @@ private String constructQuery(String id, String status) {
 
         products_table.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
         products_table.setForeground(new java.awt.Color(53, 55, 75));
+        products_table.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID", "Code", "Name", "Quantity", "Price", "Status"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         products_table.setGridColor(new java.awt.Color(255, 255, 255));
         products_table.setSelectionBackground(new java.awt.Color(120, 160, 131));
         products_table.getTableHeader().setReorderingAllowed(false);
@@ -198,9 +205,17 @@ private String constructQuery(String id, String status) {
             }
         });
         jScrollPane1.setViewportView(products_table);
+        if (products_table.getColumnModel().getColumnCount() > 0) {
+            products_table.getColumnModel().getColumn(0).setResizable(false);
+            products_table.getColumnModel().getColumn(1).setResizable(false);
+            products_table.getColumnModel().getColumn(2).setResizable(false);
+            products_table.getColumnModel().getColumn(3).setResizable(false);
+            products_table.getColumnModel().getColumn(4).setResizable(false);
+            products_table.getColumnModel().getColumn(5).setResizable(false);
+        }
 
         main_panel.add(jScrollPane1);
-        jScrollPane1.setBounds(30, 120, 490, 460);
+        jScrollPane1.setBounds(30, 120, 490, 470);
 
         jPanel6.setBackground(new java.awt.Color(255, 255, 255));
         jPanel6.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -319,7 +334,7 @@ private String constructQuery(String id, String status) {
         jPanel7.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 90, 100, 30));
 
         main_panel.add(jPanel7);
-        jPanel7.setBounds(530, 450, 250, 130);
+        jPanel7.setBounds(530, 460, 250, 130);
 
         searchbar.setForeground(new java.awt.Color(53, 55, 75));
         searchbar.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(120, 160, 131), 1, true));
@@ -362,11 +377,15 @@ private String constructQuery(String id, String status) {
         main_panel.add(jLabel28);
         jLabel28.setBounds(740, 10, 40, 50);
 
-        jLabel31.setFont(new java.awt.Font("SansSerif", 0, 10)); // NOI18N
-        jLabel31.setForeground(new java.awt.Color(52, 73, 85));
-        jLabel31.setText("*press ↑ and ↓ to navigate table");
-        main_panel.add(jLabel31);
-        jLabel31.setBounds(30, 580, 220, 14);
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/media/icons8-print-35.png"))); // NOI18N
+        jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel2MouseClicked(evt);
+            }
+        });
+        main_panel.add(jLabel2);
+        jLabel2.setBounds(650, 10, 40, 50);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -431,7 +450,20 @@ private String constructQuery(String id, String status) {
         try {
             dbConnector connect = new dbConnector();
             ResultSet rs = connect.getData(searchQuery);
-            products_table.setModel(DbUtils.resultSetToTableModel(rs));
+            DefaultTableModel tblmod = (DefaultTableModel)products_table.getModel();
+            tblmod.setRowCount(0);
+            while(rs.next()){
+                String dbId = String.valueOf(rs.getInt("p_id"));
+                String dbCode = rs.getString("p_barcode");
+                String dbName = rs.getString("p_name");
+                String dbQty = String.valueOf(rs.getString("p_qty"));
+                String dbPrice = String.valueOf(rs.getDouble("p_price"));
+                String dbStatus = rs.getString("p_status");
+                
+                String table[] = {dbId, dbCode, dbName, dbQty, dbPrice, dbStatus};
+                
+                tblmod.addRow(table);
+                }
         } catch(SQLException ex) {
             System.out.println("Error searching users: " + ex.getMessage());
         }
@@ -464,12 +496,18 @@ private String constructQuery(String id, String status) {
         }
     }//GEN-LAST:event_products_tableKeyReleased
 
+    private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
+        TablePrinter print = new TablePrinter(products_table, "Products");
+        print.print();
+    }//GEN-LAST:event_jLabel2MouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel barcode_disp;
     private javax.swing.JLabel id_disp;
     private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
@@ -481,7 +519,6 @@ private String constructQuery(String id, String status) {
     private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel30;
-    private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel44;
     private javax.swing.JLabel jLabel45;
     private javax.swing.JLabel jLabel6;

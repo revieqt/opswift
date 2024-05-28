@@ -5,14 +5,16 @@
  */
 package login;
 
-import accounting.accounting_dashboard;
+import accounting.accountingMain;
 import admin.adminMain;
 import cashier.cashierMain;
 import config.Session;
 import config.dbConnector;
+import config.passwordHasher;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.security.NoSuchAlgorithmException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.AbstractAction;
@@ -62,7 +64,7 @@ public class loginForm extends javax.swing.JFrame {
     
     public void loginButton(){
         dbConnector connect = new dbConnector();
-        if(connect.columnCount("users")==0){
+        if(connect.archiveCount("users")==0){
             errormsg.setText("There are no accounts saved! Create New.");
         }else{
             if(loginAcc(username.getText(),pass.getText())){
@@ -74,7 +76,7 @@ public class loginForm extends javax.swing.JFrame {
                     cashierMain open = new cashierMain();
                     open.setVisible(true);
                 }else{
-                    accounting_dashboard open = new accounting_dashboard();
+                    accountingMain open = new accountingMain();
                     open.setVisible(true);
                 }
                 this.dispose();
@@ -120,7 +122,7 @@ public class loginForm extends javax.swing.JFrame {
     
     public void barcodeLogIn(String bar){
         dbConnector connect = new dbConnector();
-        if(connect.columnCount("users")==0){
+        if(connect.archiveCount("users")==0){
             errormsg.setText("There are no accounts saved! Create New.");
         }else{
             String scan = bar;
@@ -134,7 +136,7 @@ public class loginForm extends javax.swing.JFrame {
                     cashierMain open = new cashierMain();
                     open.setVisible(true);
                 }else{
-                    accounting_dashboard open = new accounting_dashboard();
+                    accountingMain open = new accountingMain();
                     open.setVisible(true);
                 }
                 this.dispose();
@@ -149,19 +151,28 @@ public class loginForm extends javax.swing.JFrame {
     public static boolean loginAcc(String username, String password){
         dbConnector connector = new dbConnector();
         try{
-            ResultSet resultSet = connector.getData("SELECT * FROM users  WHERE u_username = '" + username + "' AND u_password = '" + password + "'");
+            String query = "SELECT * FROM users  WHERE u_username = '" + username+ "'";
+            ResultSet resultSet = connector.getData(query);
             if(resultSet.next()){
-                status = resultSet.getString("u_status");
-                type = resultSet.getString("u_type");
-                setSession(resultSet);
-                return true;
+              
+                    String rehashedPass = passwordHasher.hashPassword(password);
+                    String hashedPass = resultSet.getString("u_password");
+                    if(hashedPass.equals(rehashedPass)){
+                        status = resultSet.getString("u_status");
+                        type = resultSet.getString("u_type");
+                        setSession(resultSet);
+                        return true;
+                    }else{
+                        return false;
+                    }
             }else{
                 return false;
             }
-        }catch (SQLException ex) {
+                
+        }catch (SQLException | NoSuchAlgorithmException ex) {
             return false;
         }
-    }
+}
     
     //CODE TO SEARCH ACCOUNT FROM THE DATABASE USING BARCODE
     public static boolean scanBarcode(String bar){
@@ -192,6 +203,7 @@ public class loginForm extends javax.swing.JFrame {
         sess.setPassword(resultSet.getString("u_password"));
         sess.setType(resultSet.getString("u_type"));
         sess.setStatus(resultSet.getString("u_status"));
+        sess.setImage(resultSet.getString("u_img"));
     }
     
     public void errorMessages(boolean isBarcode){
