@@ -3,48 +3,49 @@ package admin;
 import static admin.adminMain.checkData;
 import config.TableQueries;
 import config.dbConnector;
-import java.awt.Color;
-import javax.swing.table.TableModel;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class admin_productsEdit extends javax.swing.JFrame {
-    
-    public int id;
-    public String bar;
+
     public admin_productsEdit() {
         setUndecorated(true);
         initComponents();
+        pop();
     }
-    
-    public void accessTable(TableModel model, int rowid){
-        id = Integer.parseInt(model.getValueAt(rowid, 0).toString());
-        bar = model.getValueAt(rowid, 1).toString();
-        
-        name.setText(model.getValueAt(rowid, 2).toString());
-        name.setBackground(Color.LIGHT_GRAY);
-        name.setEditable(false);
-        barcode.setBackground(Color.LIGHT_GRAY);
-        name.setEditable(false);
-        barcode.setText(bar);
-        qty.setText(model.getValueAt(rowid, 3).toString());
-        price.setText(model.getValueAt(rowid, 4).toString());
-        
-        if((model.getValueAt(rowid, 5).toString()).equals("Available")){
-            status.setSelectedItem("Available");
-        }else{
-            status.setSelectedItem("Unavailable");
+    public int currentid;
+    public String bc;
+     public void pop(){
+           supplierid.addItem("");
+        try {
+            
+            ResultSet rs = connect.getData("SELECT * FROM suppliers");
+            while(rs.next()){
+                supplierid.addItem(rs.getString("s_id"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(admin_productsEdit.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
+        
+        wslbl.setVisible(false);
+            supplierwholesale.setVisible(false);
+            wslbl1.setVisible(false);
+            supplierwholesale1.setVisible(false);
+     }
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
         jPanel2 = new enhance.RoundPanel_w();
         jPanel5 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         barcode = new enhance.CustomTF();
+        jPanel8 = new javax.swing.JPanel();
+        jLabel12 = new javax.swing.JLabel();
         jPanel7 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
         qty = new enhance.CustomTF();
@@ -60,17 +61,33 @@ public class admin_productsEdit extends javax.swing.JFrame {
         jPanel9 = new javax.swing.JPanel();
         jLabel13 = new javax.swing.JLabel();
         price = new enhance.CustomTF();
+        jPanel10 = new enhance.RoundBorder_g()
+        ;
+        jPanel11 = new javax.swing.JPanel();
+        jLabel14 = new javax.swing.JLabel();
+        supplierid = new javax.swing.JComboBox<>();
+        jPanel12 = new javax.swing.JPanel();
+        jLabel15 = new javax.swing.JLabel();
+        supplierprice = new enhance.CustomTF();
+        suppliername = new javax.swing.JTextField();
+        ws = new javax.swing.JRadioButton();
+        wslbl = new javax.swing.JPanel();
+        jLabel16 = new javax.swing.JLabel();
+        supplierwholesale = new enhance.CustomTF();
+        wslbl1 = new javax.swing.JPanel();
+        jLabel17 = new javax.swing.JLabel();
+        supplierwholesale1 = new enhance.CustomTF();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowActivated(java.awt.event.WindowEvent evt) {
+                formWindowActivated(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(80, 114, 123));
         jPanel1.setLayout(null);
-
-        jLabel1.setFont(new java.awt.Font("Tw Cen MT", 1, 24)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Edit Product");
-        jPanel1.add(jLabel1);
-        jLabel1.setBounds(20, 30, 120, 40);
 
         jPanel2.setBackground(new java.awt.Color(80, 114, 123));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -87,6 +104,8 @@ public class admin_productsEdit extends javax.swing.JFrame {
 
         jPanel2.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, -1, -1));
 
+        barcode.setEditable(false);
+        barcode.setBackground(new java.awt.Color(204, 204, 204));
         barcode.setForeground(new java.awt.Color(0, 51, 51));
         barcode.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
@@ -99,6 +118,18 @@ public class admin_productsEdit extends javax.swing.JFrame {
             }
         });
         jPanel2.add(barcode, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 250, 40));
+
+        jPanel8.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel8.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel12.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel12.setFont(new java.awt.Font("Nirmala UI", 2, 10)); // NOI18N
+        jLabel12.setForeground(new java.awt.Color(0, 51, 51));
+        jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel12.setText("Supplier Information");
+        jPanel8.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 100, 20));
+
+        jPanel2.add(jPanel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 10, 100, -1));
 
         jPanel7.setBackground(new java.awt.Color(255, 255, 255));
         jPanel7.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -152,10 +183,12 @@ public class admin_productsEdit extends javax.swing.JFrame {
         jLabel10.setForeground(new java.awt.Color(0, 51, 51));
         jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel10.setText("Name");
-        jPanel6.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 70, 20));
+        jPanel6.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 50, 20));
 
-        jPanel2.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 10, -1, -1));
+        jPanel2.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 10, 70, -1));
 
+        name.setEditable(false);
+        name.setBackground(new java.awt.Color(204, 204, 204));
         name.setForeground(new java.awt.Color(0, 51, 51));
         name.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
@@ -181,10 +214,10 @@ public class admin_productsEdit extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("SansSerif", 1, 11)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setText("Edit");
+        jLabel3.setText("Add");
         jPanel3.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 110, 40));
 
-        jPanel2.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 330, 130, 40));
+        jPanel2.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 330, 130, 40));
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
         jPanel4.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -200,7 +233,7 @@ public class admin_productsEdit extends javax.swing.JFrame {
         jLabel7.setText("Back");
         jPanel4.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 110, 40));
 
-        jPanel2.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 330, 130, 40));
+        jPanel2.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 330, 130, 40));
 
         jPanel9.setBackground(new java.awt.Color(255, 255, 255));
         jPanel9.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -209,7 +242,7 @@ public class admin_productsEdit extends javax.swing.JFrame {
         jLabel13.setFont(new java.awt.Font("Nirmala UI", 2, 10)); // NOI18N
         jLabel13.setForeground(new java.awt.Color(0, 51, 51));
         jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel13.setText("Price");
+        jLabel13.setText(" Retail Price");
         jPanel9.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 70, -1));
 
         jPanel2.add(jPanel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 190, -1, -1));
@@ -227,14 +260,169 @@ public class admin_productsEdit extends javax.swing.JFrame {
         });
         jPanel2.add(price, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 200, 250, 40));
 
+        jPanel10.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel10.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jPanel11.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel11.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel14.setBackground(new java.awt.Color(44, 88, 110));
+        jLabel14.setFont(new java.awt.Font("Nirmala UI", 2, 10)); // NOI18N
+        jLabel14.setForeground(new java.awt.Color(0, 51, 51));
+        jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel14.setText("Supplier Name");
+        jPanel11.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 80, -1));
+
+        jPanel10.add(jPanel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, 80, -1));
+
+        supplierid.setBackground(new java.awt.Color(44, 88, 110));
+        supplierid.setEnabled(false);
+        supplierid.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                supplieridItemStateChanged(evt);
+            }
+        });
+        supplierid.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                supplieridMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                supplieridMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                supplieridMouseExited(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                supplieridMousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                supplieridMouseReleased(evt);
+            }
+        });
+        supplierid.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                supplieridActionPerformed(evt);
+            }
+        });
+        supplierid.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                supplieridPropertyChange(evt);
+            }
+        });
+        jPanel10.add(supplierid, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 230, 40));
+
+        jPanel12.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel12.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel15.setBackground(new java.awt.Color(44, 88, 110));
+        jLabel15.setFont(new java.awt.Font("Nirmala UI", 2, 10)); // NOI18N
+        jLabel15.setForeground(new java.awt.Color(0, 51, 51));
+        jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel15.setText("Manufacturing Price");
+        jPanel12.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 100, -1));
+
+        jPanel10.add(jPanel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 130, 100, -1));
+
+        supplierprice.setForeground(new java.awt.Color(0, 51, 51));
+        supplierprice.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                supplierpriceMouseReleased(evt);
+            }
+        });
+        supplierprice.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                supplierpricePropertyChange(evt);
+            }
+        });
+        jPanel10.add(supplierprice, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, 230, 40));
+
+        suppliername.setEditable(false);
+        suppliername.setBackground(new java.awt.Color(204, 204, 204));
+        suppliername.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
+        jPanel10.add(suppliername, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 230, 40));
+
+        ws.setBackground(new java.awt.Color(255, 255, 255));
+        ws.setFont(new java.awt.Font("Nirmala UI", 2, 10)); // NOI18N
+        ws.setForeground(new java.awt.Color(0, 51, 51));
+        ws.setText("Allow Wholesale Manufacturing Price");
+        ws.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                wsItemStateChanged(evt);
+            }
+        });
+        ws.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                wsActionPerformed(evt);
+            }
+        });
+        jPanel10.add(ws, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 183, 190, 30));
+
+        wslbl.setBackground(new java.awt.Color(255, 255, 255));
+        wslbl.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel16.setBackground(new java.awt.Color(44, 88, 110));
+        jLabel16.setFont(new java.awt.Font("Nirmala UI", 2, 10)); // NOI18N
+        jLabel16.setForeground(new java.awt.Color(0, 51, 51));
+        jLabel16.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel16.setText("Wholesale Price");
+        wslbl.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 90, -1));
+
+        jPanel10.add(wslbl, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 210, -1, -1));
+
+        supplierwholesale.setForeground(new java.awt.Color(0, 51, 51));
+        supplierwholesale.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                supplierwholesaleMouseReleased(evt);
+            }
+        });
+        supplierwholesale.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                supplierwholesalePropertyChange(evt);
+            }
+        });
+        jPanel10.add(supplierwholesale, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 220, 130, 40));
+
+        wslbl1.setBackground(new java.awt.Color(255, 255, 255));
+        wslbl1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel17.setBackground(new java.awt.Color(44, 88, 110));
+        jLabel17.setFont(new java.awt.Font("Nirmala UI", 2, 10)); // NOI18N
+        jLabel17.setForeground(new java.awt.Color(0, 51, 51));
+        jLabel17.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel17.setText("per Item(s)");
+        wslbl1.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 50, -1));
+
+        jPanel10.add(wslbl1, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 210, 60, -1));
+
+        supplierwholesale1.setForeground(new java.awt.Color(0, 51, 51));
+        supplierwholesale1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                supplierwholesale1MouseReleased(evt);
+            }
+        });
+        supplierwholesale1.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                supplierwholesale1PropertyChange(evt);
+            }
+        });
+        jPanel10.add(supplierwholesale1, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 220, 90, 40));
+
+        jPanel2.add(jPanel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 20, 270, 280));
+
         jPanel1.add(jPanel2);
-        jPanel2.setBounds(10, 70, 290, 380);
+        jPanel2.setBounds(10, 70, 560, 380);
+
+        jLabel1.setFont(new java.awt.Font("Tw Cen MT", 1, 24)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("Edit Product");
+        jPanel1.add(jLabel1);
+        jLabel1.setBounds(20, 30, 140, 40);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 308, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 580, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -278,28 +466,28 @@ public class admin_productsEdit extends javax.swing.JFrame {
     }//GEN-LAST:event_namePropertyChange
 
     private void jPanel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel3MouseClicked
-        
-        boolean proceed = false;
-        
-        if(name.getText().isEmpty()|| barcode.getText().isEmpty()|| qty.getText().isEmpty()||price.getText().isEmpty()){
-            error.setText("*Please fill-out necessary information!");
-        }else{
-            if(checkData("*","products","p_barcode",barcode.getText())){
-                if(bar.equals(barcode.getText())){
-                    proceed=true;
-                }else{
-                    error.setText("*Product already exists!");
-                }
+
+        if(ws.isSelected()){
+            if(name.getText().isEmpty()|| barcode.getText().isEmpty()|| qty.getText().isEmpty()||price.getText().isEmpty()||suppliername.getText().isEmpty()||supplierprice.getText().isEmpty()||supplierwholesale.getText().isEmpty()||supplierwholesale1.getText().isEmpty()){
+                error.setText("*Please fill-out necessary information!");
             }else{
-                proceed=true;
+                TableQueries prod = new TableQueries();
+                prod.updateProduct(currentid, Integer.parseInt(qty.getText()), Double.parseDouble(price.getText()),
+                        status.getSelectedItem().toString(), Double.parseDouble(supplierprice.getText()),
+                        true, Double.parseDouble(supplierwholesale.getText()), Integer.parseInt(supplierwholesale1.getText()));
             }
-        }
+        }else{
+            if(name.getText().isEmpty()|| barcode.getText().isEmpty()|| qty.getText().isEmpty()||price.getText().isEmpty()||suppliername.getText().isEmpty()||supplierprice.getText().isEmpty()){
+                error.setText("*Please fill-out necessary information!");
+            }else{
+                TableQueries prod = new TableQueries();
+                prod.updateProduct(currentid, Integer.parseInt(qty.getText()), Double.parseDouble(price.getText()),
+                        status.getSelectedItem().toString(), Double.parseDouble(supplierprice.getText()),
+                        false, 0, 0);
+            }
+            }
         
-        if(proceed){
-            TableQueries prod = new TableQueries();
-            prod.updateProduct(id, name.getText(), barcode.getText(), Integer.parseInt(qty.getText()), Double.parseDouble(price.getText()), (String)status.getSelectedItem());
-            this.dispose();
-        }
+
     }//GEN-LAST:event_jPanel3MouseClicked
 
     private void jPanel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel4MouseClicked
@@ -314,6 +502,96 @@ public class admin_productsEdit extends javax.swing.JFrame {
     private void pricePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_pricePropertyChange
         // TODO add your handling code here:
     }//GEN-LAST:event_pricePropertyChange
+
+    private void supplieridActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_supplieridActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_supplieridActionPerformed
+
+    private void supplieridPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_supplieridPropertyChange
+  
+    }//GEN-LAST:event_supplieridPropertyChange
+
+    private void supplierpriceMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_supplierpriceMouseReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_supplierpriceMouseReleased
+
+    private void supplierpricePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_supplierpricePropertyChange
+        // TODO add your handling code here:
+    }//GEN-LAST:event_supplierpricePropertyChange
+dbConnector connect = new dbConnector();
+    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
+      
+    }//GEN-LAST:event_formWindowActivated
+
+    private void supplieridMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_supplieridMouseReleased
+      
+    }//GEN-LAST:event_supplieridMouseReleased
+
+    private void supplieridMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_supplieridMouseClicked
+        
+    }//GEN-LAST:event_supplieridMouseClicked
+
+    private void supplieridMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_supplieridMouseEntered
+    
+    }//GEN-LAST:event_supplieridMouseEntered
+
+    private void supplieridMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_supplieridMouseExited
+      
+    }//GEN-LAST:event_supplieridMouseExited
+
+    private void supplieridMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_supplieridMousePressed
+ 
+    }//GEN-LAST:event_supplieridMousePressed
+
+    private void supplieridItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_supplieridItemStateChanged
+        if(!(supplierid.getSelectedItem() == "")){
+            try {
+            ResultSet rs = connect.getData("SELECT * FROM suppliers WHERE s_id = '"+supplierid.getSelectedItem()+"'");
+            if(rs.next()){
+                suppliername.setText(rs.getString("s_name"));
+            }
+            
+                    } catch (SQLException ex) {
+            Logger.getLogger(admin_productsEdit.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        }else{
+            suppliername.setText("");
+        }
+    }//GEN-LAST:event_supplieridItemStateChanged
+
+    private void supplierwholesaleMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_supplierwholesaleMouseReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_supplierwholesaleMouseReleased
+
+    private void supplierwholesalePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_supplierwholesalePropertyChange
+        // TODO add your handling code here:
+    }//GEN-LAST:event_supplierwholesalePropertyChange
+
+    private void wsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_wsActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_wsActionPerformed
+
+    private void wsItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_wsItemStateChanged
+        if(ws.isSelected()){
+            wslbl.setVisible(true);
+            supplierwholesale.setVisible(true);
+            wslbl1.setVisible(true);
+            supplierwholesale1.setVisible(true);
+        }else{
+            wslbl.setVisible(false);
+            supplierwholesale.setVisible(false);
+            wslbl1.setVisible(false);
+            supplierwholesale1.setVisible(false);
+        }
+    }//GEN-LAST:event_wsItemStateChanged
+
+    private void supplierwholesale1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_supplierwholesale1MouseReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_supplierwholesale1MouseReleased
+
+    private void supplierwholesale1PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_supplierwholesale1PropertyChange
+        // TODO add your handling code here:
+    }//GEN-LAST:event_supplierwholesale1PropertyChange
 
     /**
      * @param args the command line arguments
@@ -366,26 +644,43 @@ public class admin_productsEdit extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField barcode;
+    public javax.swing.JTextField barcode;
     private javax.swing.JLabel error;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel11;
+    private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
-    private javax.swing.JTextField name;
-    private javax.swing.JTextField price;
-    private javax.swing.JTextField qty;
-    private javax.swing.JComboBox<String> status;
+    public javax.swing.JTextField name;
+    public javax.swing.JTextField price;
+    public javax.swing.JTextField qty;
+    public javax.swing.JComboBox<String> status;
+    public javax.swing.JComboBox<String> supplierid;
+    public javax.swing.JTextField suppliername;
+    public javax.swing.JTextField supplierprice;
+    public javax.swing.JTextField supplierwholesale;
+    public javax.swing.JTextField supplierwholesale1;
+    public javax.swing.JRadioButton ws;
+    private javax.swing.JPanel wslbl;
+    private javax.swing.JPanel wslbl1;
     // End of variables declaration//GEN-END:variables
 }

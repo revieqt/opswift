@@ -3,7 +3,10 @@ package admin;
 import static admin.adminMain.checkData;
 import config.ImportImages;
 import config.TableQueries;
+import config.dbConnector;
 import java.io.File;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -37,8 +40,22 @@ public class admin_customersEdit extends javax.swing.JFrame {
             
             cnum = num.getText();
             mail= email.getText();
+            dbConnector connect = new dbConnector();
+            try {
+                ResultSet rs = connect.getData("SELECT * FROM customers WHERE c_id = "+ model.getValueAt(rowid, 0).toString());
+                if(rs.next()){
+                    img.setIcon(imp.ResizeImage(rs.getString("c_img"), null, img));
+                    imp.oldpath = rs.getString("c_img");
+                    imp.path = rs.getString("c_img");
+                    imp.destination = rs.getString("c_img");
+                }else{
+                    System.out.println("No image found!");
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex);
+            }
             
-            if((model.getValueAt(rowid, 9).toString()).equals("Active")){
+            if((model.getValueAt(rowid, 10).toString()).equals("Active")){
                 status.setSelectedItem("Active");
             }else{
                 status.setSelectedItem("Inactive");
@@ -144,6 +161,7 @@ public class admin_customersEdit extends javax.swing.JFrame {
 
         bdate.setBackground(new java.awt.Color(255, 255, 255));
         bdate.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(51, 51, 51), 1, true));
+        bdate.setDateFormatString("yyyy-MM-dd");
         jPanel2.add(bdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 170, 40));
 
         jPanel7.setBackground(new java.awt.Color(255, 255, 255));
@@ -443,25 +461,47 @@ public class admin_customersEdit extends javax.swing.JFrame {
         if(fname.getText().isEmpty()|| lname.getText().isEmpty()|| dateFormat.format(bdate.getDate()).isEmpty() || num.getText().isEmpty()|| email.getText().isEmpty()){
             error.setText("*Please fill-out necessary information!");
         }else{
+            boolean checknum = false;
+            boolean checkemail = false;
+            boolean checkimg = false;
             if(checkData("*","customers","c_num",num.getText())){
                 if(cnum.equals(num.getText())){
-                    proceed = true;
+                    checknum = true;
                 }else{
                     error.setText("*Contact Number already Taken!");
                 }
-            }else if(!isValidNumber(num.getText())){
+            }else{
+                checknum = true;
+            }
+            
+            if(!isValidNumber(num.getText())){
                 error.setText("*Invalid Contact Number!");
-            }else if(checkData("*","customers","c_email",email.getText())){
+                checknum = false;
+            }else{
+                checknum = true;
+            }
+            
+            if(checkData("*","customers","c_email",email.getText())){
                 if(mail.equals(email.getText())){
-                    proceed=true;
+                    checkemail=true;
                 }else{
                     error.setText("*Email already Taken!");
                 }
-            }else if(!isValidEmail(email.getText())){
+            }
+            if(!isValidEmail(email.getText())){
                 error.setText("*Invalid email!");
-            }else if(img.getIcon()==null){
+                checkemail = false;
+            }else{
+                checkemail = true;
+            }
+            
+            if(img.getIcon()==null){
                 error.setText("*Please insert an Image!");
             }else{
+                checkimg = true;
+            }
+            
+            if(checknum&&checkimg&&checkemail){
                 proceed = true;
             }
         }

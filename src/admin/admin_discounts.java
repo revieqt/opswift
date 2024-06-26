@@ -432,13 +432,13 @@ private String constructQuery(String id, String status) {
         TableModel model = discounts_table.getModel();
 
         id_disp.setText(model.getValueAt(choose, 0).toString());
-            code_disp.setText(model.getValueAt(choose, 1).toString());
-            name_disp.setText(model.getValueAt(choose, 2).toString());
-            amount_disp.setText(model.getValueAt(choose, 3).toString());
-            type_disp.setText(model.getValueAt(choose, 4).toString());
-            redeemable_disp.setText(model.getValueAt(choose, 5).toString());
-            rtype_disp.setText(model.getValueAt(choose, 6).toString());
-            status_disp.setText(model.getValueAt(choose, 7).toString());
+        code_disp.setText(model.getValueAt(choose, 1).toString());
+        name_disp.setText(model.getValueAt(choose, 2).toString());
+        amount_disp.setText(model.getValueAt(choose, 3).toString());
+        type_disp.setText(model.getValueAt(choose, 4).toString());
+        redeemable_disp.setText(model.getValueAt(choose, 5).toString());
+        rtype_disp.setText(model.getValueAt(choose, 6).toString());
+        status_disp.setText(model.getValueAt(choose, 7).toString());
     }//GEN-LAST:event_discounts_tableMouseClicked
 
     private void jLabel44MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel44MouseClicked

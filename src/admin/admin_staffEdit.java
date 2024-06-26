@@ -339,17 +339,24 @@ public class admin_staffEdit extends javax.swing.JFrame {
         if(fname.getText().isEmpty()|| lname.getText().isEmpty()|| username.getText().isEmpty()){
             error.setText("*Please fill-out necessary information!");
         }else{
+            boolean ok = false;
+            boolean imgx = false;
             if(checkData("*","users","u_username",username.getText())){
                 if(current_username.equals(username.getText())){
-                    proceed = true;
+                    ok = true;
                 }else{
                     error.setText("*Username already exists!");
                 }
-            }else if(img.getIcon()==null){
+            }
+            if(img.getIcon()==null){
                 error.setText("*Please insert an Image!");
             }else{
+                imgx = true;
+            }
+            if(ok && imgx){
                 proceed=true;
             }
+            
         }
         
         if(proceed){

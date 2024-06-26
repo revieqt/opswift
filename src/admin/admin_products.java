@@ -4,6 +4,8 @@ import config.TableQueries;
 import config.dbConnector;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 import javax.swing.table.DefaultTableModel;
@@ -84,9 +86,31 @@ private String constructQuery(String id, String status) {
         TableModel model = products_table.getModel();
         
         if(rowid != -1){
-            admin_productsEdit open = new admin_productsEdit();
-            open.setVisible(true);
-            open.accessTable(model, rowid);
+            dbConnector connect = new dbConnector();
+            try {
+                ResultSet rs = connect.getData("SELECT * FROM products p JOIN suppliers s ON p.p_supplier = s.s_id WHERE p.p_id = "+model.getValueAt(rowid, 0).toString());
+                if(rs.next()){
+                    admin_productsEdit open = new admin_productsEdit();
+                    open.bc = model.getValueAt(rowid, 1).toString();
+                    open.currentid = Integer.parseInt(model.getValueAt(rowid, 0).toString());
+                    open.barcode.setText(model.getValueAt(rowid, 1).toString());
+                    open.name.setText(model.getValueAt(rowid, 2).toString());
+                    open.price.setText(model.getValueAt(rowid, 4).toString());
+                    open.qty.setText(model.getValueAt(rowid, 3).toString());
+                    open.status.setSelectedItem(model.getValueAt(rowid, 5).toString());
+                    open.setVisible(true);
+                    open.supplierid.setSelectedItem(String.valueOf(rs.getInt("p.p_supplier")));
+                    open.suppliername.setText(rs.getString("s.s_name"));
+                    open.supplierprice.setText(""+rs.getDouble("p.p_mprice"));
+                    if(rs.getBoolean("p.p_ws")){
+                        open.ws.setSelected(true);
+                        open.supplierwholesale.setText(""+rs.getDouble("p.p_wsprice"));
+                        open.supplierwholesale1.setText(""+rs.getInt("p.p_wsitem"));
+                    }
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(admin_products.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }else{
             JOptionPane.showMessageDialog(this, "Please select a product!");
         }
@@ -125,6 +149,7 @@ private String constructQuery(String id, String status) {
         jLabel45 = new javax.swing.JLabel();
         jLabel30 = new javax.swing.JLabel();
         id_disp = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
         jPanel7 = new enhance.RoundPanel();
         jLabel6 = new javax.swing.JLabel();
         sortID = new javax.swing.JComboBox<>();
@@ -305,8 +330,16 @@ private String constructQuery(String id, String status) {
         id_disp.setForeground(new java.awt.Color(80, 114, 123));
         jPanel6.add(id_disp, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 190, 140, -1));
 
+        jButton1.setText("Restock");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jPanel6.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 330, 210, -1));
+
         main_panel.add(jPanel6);
-        jPanel6.setBounds(530, 80, 250, 320);
+        jPanel6.setBounds(530, 80, 250, 370);
 
         jPanel7.setBackground(new java.awt.Color(246, 244, 235));
         jPanel7.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -501,10 +534,24 @@ private String constructQuery(String id, String status) {
         print.print();
     }//GEN-LAST:event_jLabel2MouseClicked
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        int choose = products_table.getSelectedRow();
+        TableModel model = products_table.getModel();
+        
+        if(choose!=-1){
+            admin_productsRestock res = new admin_productsRestock();
+            res.id = Integer.parseInt(model.getValueAt(choose, 0).toString());
+            res.name.setText(model.getValueAt(choose, 2).toString());
+            res.barcode.setText(model.getValueAt(choose, 1).toString());
+            res.setVisible(true);
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel barcode_disp;
     private javax.swing.JLabel id_disp;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

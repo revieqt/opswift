@@ -1,6 +1,7 @@
 package cashier;
 
-import static admin.adminMain.checkData;
+import admin.admin_profile;
+import admin.admin_staff;
 import config.Session;
 import config.dbConnector;
 import java.awt.Color;
@@ -13,8 +14,6 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
@@ -51,11 +50,8 @@ public class cashierMain extends javax.swing.JFrame {
     Color bgcolor = new Color(246,244,235);
     Color sidecolor = new Color(52,73,85);
     Color text1color = new Color(120, 160, 131);
-    boolean search_open = false;
     boolean void_open = false;
     boolean customers_open = false;
-    boolean sales_open = false;
-    boolean settings_open = false;
     
     public void setDateTime(){
         Date now = new Date();
@@ -72,11 +68,6 @@ public class cashierMain extends javax.swing.JFrame {
     
     
     public void resetMenu(){
-        search_open = false;
-        searchButton.setBackground(sidecolor);
-        jLabel11.setForeground(text1color);
-        jLabel11.setFont(new Font(jLabel11.getFont().getFontName(), Font.PLAIN, jLabel11.getFont().getSize()));
-        
         void_open = false;
         voidButton.setBackground(sidecolor);
         jLabel16.setForeground(text1color);
@@ -86,16 +77,6 @@ public class cashierMain extends javax.swing.JFrame {
         customerButton.setBackground(sidecolor);
         jLabel17.setForeground(text1color);
         jLabel17.setFont(new Font(jLabel17.getFont().getFontName(), Font.PLAIN, jLabel17.getFont().getSize()));
-        
-        sales_open = false;
-        salesButton.setBackground(sidecolor);
-        jLabel18.setForeground(text1color);
-        jLabel18.setFont(new Font(jLabel18.getFont().getFontName(), Font.PLAIN, jLabel18.getFont().getSize()));
-        
-        settings_open = false;
-        jPanel13.setBackground(sidecolor);
-        jLabel20.setForeground(text1color);
-        jLabel20.setFont(new Font(jLabel20.getFont().getFontName(), Font.PLAIN, jLabel20.getFont().getSize()));
     }
     
        
@@ -333,31 +314,22 @@ public class cashierMain extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        desktop = new javax.swing.JDesktopPane();
         jPanel5 = new javax.swing.JPanel();
         voidButton = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        searchButton = new javax.swing.JPanel();
-        jLabel11 = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
-        jPanel13 = new javax.swing.JPanel();
-        jLabel20 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
         customerButton = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
         time_disp = new javax.swing.JLabel();
-        salesButton = new javax.swing.JPanel();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel18 = new javax.swing.JLabel();
         jPanel2 = new enhance.RoundPanel();
         jLabel2 = new javax.swing.JLabel();
         userLog = new javax.swing.JLabel();
         codeLog = new javax.swing.JLabel();
         date_disp = new javax.swing.JLabel();
         jPanel3 = new enhance.RoundBorder_g();
-        cashier_desktop = new javax.swing.JDesktopPane();
         searchbar = new javax.swing.JTextField();
         searchbutton = new enhance.RoundBorder_g();
         jLabel10 = new javax.swing.JLabel();
@@ -387,7 +359,8 @@ public class cashierMain extends javax.swing.JFrame {
         checkout = new javax.swing.JButton();
         jPanel7 = new enhance.RoundBorder_g();
         guest = new javax.swing.JLabel();
-        jLabel15 = new javax.swing.JLabel();
+        jLabel18 = new javax.swing.JLabel();
+        ccode = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -398,6 +371,20 @@ public class cashierMain extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(246, 244, 235));
         jPanel1.setLayout(null);
+
+        javax.swing.GroupLayout desktopLayout = new javax.swing.GroupLayout(desktop);
+        desktop.setLayout(desktopLayout);
+        desktopLayout.setHorizontalGroup(
+            desktopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 810, Short.MAX_VALUE)
+        );
+        desktopLayout.setVerticalGroup(
+            desktopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 610, Short.MAX_VALUE)
+        );
+
+        jPanel1.add(desktop);
+        desktop.setBounds(170, 0, 810, 610);
 
         jPanel5.setBackground(new java.awt.Color(52, 73, 85));
         jPanel5.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -425,7 +412,7 @@ public class cashierMain extends javax.swing.JFrame {
         jLabel16.setText("Void Transaction");
         voidButton.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 0, 100, 30));
 
-        jPanel5.add(voidButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 200, 150, 30));
+        jPanel5.add(voidButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 150, 150, 30));
 
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/media/opswift-removebg-preview (3).png"))); // NOI18N
         jLabel4.setToolTipText("[F1] Back to Dashboard");
@@ -435,56 +422,6 @@ public class cashierMain extends javax.swing.JFrame {
             }
         });
         jPanel5.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 180, -1));
-
-        searchButton.setBackground(new java.awt.Color(52, 73, 85));
-        searchButton.setToolTipText("[F2] Staff");
-        searchButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                searchButtonMouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                searchButtonMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                searchButtonMouseExited(evt);
-            }
-        });
-        searchButton.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel11.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel11.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        jLabel11.setForeground(new java.awt.Color(120, 160, 131));
-        jLabel11.setText("Search Product");
-        searchButton.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 0, 100, 30));
-
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/media/icon_search.png"))); // NOI18N
-        searchButton.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 40, 30));
-
-        jPanel5.add(searchButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 160, 150, 30));
-
-        jPanel13.setBackground(new java.awt.Color(52, 73, 85));
-        jPanel13.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jPanel13MouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jPanel13MouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                jPanel13MouseExited(evt);
-            }
-        });
-        jPanel13.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel20.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        jLabel20.setForeground(new java.awt.Color(120, 160, 131));
-        jLabel20.setText("Settings");
-        jPanel13.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 0, 80, 30));
-
-        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/media/icon_settings_20.png"))); // NOI18N
-        jPanel13.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 40, 30));
-
-        jPanel5.add(jPanel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 510, 150, 30));
 
         customerButton.setBackground(new java.awt.Color(52, 73, 85));
         customerButton.setToolTipText("[F4] Customers");
@@ -509,37 +446,12 @@ public class cashierMain extends javax.swing.JFrame {
         jLabel17.setText("Customer Loyalty");
         customerButton.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 0, 100, 30));
 
-        jPanel5.add(customerButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 240, 150, 30));
+        jPanel5.add(customerButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 190, 150, 30));
 
         time_disp.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         time_disp.setForeground(new java.awt.Color(255, 255, 255));
         time_disp.setText("hh-mm-ss");
         jPanel5.add(time_disp, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 110, 150, -1));
-
-        salesButton.setBackground(new java.awt.Color(52, 73, 85));
-        salesButton.setToolTipText("[F5] Sales");
-        salesButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                salesButtonMouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                salesButtonMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                salesButtonMouseExited(evt);
-            }
-        });
-        salesButton.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/media/icon_sales_20.png"))); // NOI18N
-        salesButton.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 40, 30));
-
-        jLabel18.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        jLabel18.setForeground(new java.awt.Color(120, 160, 131));
-        jLabel18.setText("Sales");
-        salesButton.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 0, 80, 30));
-
-        jPanel5.add(salesButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 280, 150, 30));
 
         jPanel2.setBackground(new java.awt.Color(52, 73, 85));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -564,7 +476,7 @@ public class cashierMain extends javax.swing.JFrame {
                 userLogMouseEntered(evt);
             }
         });
-        jPanel2.add(userLog, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 0, 100, 39));
+        jPanel2.add(userLog, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 0, 90, 39));
 
         codeLog.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
         codeLog.setForeground(new java.awt.Color(120, 160, 131));
@@ -584,20 +496,6 @@ public class cashierMain extends javax.swing.JFrame {
 
         jPanel1.add(jPanel5);
         jPanel5.setBounds(0, 0, 170, 610);
-
-        javax.swing.GroupLayout cashier_desktopLayout = new javax.swing.GroupLayout(cashier_desktop);
-        cashier_desktop.setLayout(cashier_desktopLayout);
-        cashier_desktopLayout.setHorizontalGroup(
-            cashier_desktopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 810, Short.MAX_VALUE)
-        );
-        cashier_desktopLayout.setVerticalGroup(
-            cashier_desktopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 610, Short.MAX_VALUE)
-        );
-
-        jPanel1.add(cashier_desktop);
-        cashier_desktop.setBounds(930, 580, 810, 610);
 
         searchbar.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
         searchbar.setForeground(new java.awt.Color(53, 55, 75));
@@ -662,7 +560,7 @@ public class cashierMain extends javax.swing.JFrame {
         jScrollPane1.setViewportView(table);
 
         jPanel1.add(jScrollPane1);
-        jScrollPane1.setBounds(190, 80, 500, 500);
+        jScrollPane1.setBounds(190, 80, 500, 510);
 
         jPanel6.setBackground(new java.awt.Color(255, 255, 255));
         jPanel6.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -778,6 +676,8 @@ public class cashierMain extends javax.swing.JFrame {
         jPanel1.add(jPanel9);
         jPanel9.setBounds(710, 440, 250, 90);
 
+        checkout.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        checkout.setForeground(new java.awt.Color(0, 102, 102));
         checkout.setText("CHECKOUT");
         checkout.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -785,7 +685,7 @@ public class cashierMain extends javax.swing.JFrame {
             }
         });
         jPanel1.add(checkout);
-        checkout.setBounds(710, 540, 250, 40);
+        checkout.setBounds(710, 540, 250, 50);
 
         jPanel7.setBackground(new java.awt.Color(255, 255, 255));
         jPanel7.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -795,13 +695,19 @@ public class cashierMain extends javax.swing.JFrame {
         guest.setText("Guest!");
         jPanel7.add(guest, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 10, -1, 20));
 
-        jLabel15.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        jLabel15.setForeground(new java.awt.Color(80, 114, 123));
-        jLabel15.setText("Welcome,");
-        jPanel7.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, 20));
+        jLabel18.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLabel18.setForeground(new java.awt.Color(80, 114, 123));
+        jLabel18.setText("Welcome,");
+        jPanel7.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, 20));
 
         jPanel1.add(jPanel7);
         jPanel7.setBounds(710, 30, 250, 40);
+
+        ccode.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        ccode.setForeground(new java.awt.Color(246, 244, 235));
+        ccode.setText("0");
+        jPanel1.add(ccode);
+        ccode.setBounds(900, 10, 8, 20);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -822,13 +728,29 @@ public class cashierMain extends javax.swing.JFrame {
         resetMenu();
         voidButton.setBackground(new Color(80, 114, 123));
         jLabel16.setForeground(Color.WHITE);
-        jLabel16.setFont(new Font(jLabel20.getFont().getFontName(), Font.BOLD, jLabel20.getFont().getSize()));
+        jLabel16.setFont(new Font(jLabel16.getFont().getFontName(), Font.BOLD, jLabel16.getFont().getSize()));
         
         void_open = true;
         
-        cashierMain redo = new cashierMain();
-        redo.setVisible(true);
-        this.dispose();
+        String code = JOptionPane.showInputDialog(null, "Enter Administrator Code:");
+        try{
+            ResultSet rs = connect.getData("SELECT * FROM users WHERE u_code = '"+code+"'");
+            if(rs.next()){
+                if(rs.getString("u_status").equals("Active")){
+                    cashierMain redo = new cashierMain();
+                    redo.setVisible(true);
+                    this.dispose();
+                }else{
+                    JOptionPane.showMessageDialog(null, "Administrator Inactive!");
+                }
+            }else{
+                JOptionPane.showMessageDialog(null, "Invalid Administrator Code!");
+            }
+            resetMenu();
+        }catch(SQLException ex){
+            System.out.println(ex);
+        }
+        
     }//GEN-LAST:event_voidButtonMouseClicked
 
     private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
@@ -837,26 +759,6 @@ public class cashierMain extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jLabel2MouseClicked
 
-    private void searchButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchButtonMouseClicked
-        resetMenu();
-        searchButton.setBackground(new Color(80, 114, 123));
-        jLabel11.setForeground(Color.WHITE);
-        jLabel11.setFont(new Font(jLabel20.getFont().getFontName(), Font.BOLD, jLabel20.getFont().getSize()));
-        
-        search_open = true;
-        cashier_products up = new cashier_products();
-        cashier_desktop.add(up).setVisible(true);; 
-    }//GEN-LAST:event_searchButtonMouseClicked
-
-    private void jPanel13MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel13MouseClicked
-        resetMenu();
-        jPanel13.setBackground(new Color(80, 114, 123));
-        jLabel20.setForeground(Color.WHITE);
-        jLabel20.setFont(new Font(jLabel20.getFont().getFontName(), Font.BOLD, jLabel20.getFont().getSize()));
-        
-        settings_open = true;
-    }//GEN-LAST:event_jPanel13MouseClicked
-
     private void customerButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_customerButtonMouseClicked
         resetMenu();
         customerButton.setBackground(new Color(80, 114, 123));
@@ -864,48 +766,26 @@ public class cashierMain extends javax.swing.JFrame {
         jLabel17.setFont(new Font(jLabel17.getFont().getFontName(), Font.BOLD, jLabel17.getFont().getSize()));
         
         customers_open = true;
-        String code = JOptionPane.showInputDialog(null, "Enter Customer Code:");
+        String code = JOptionPane.showInputDialog(null, "By entering customer code,\n"
+                + "1 point will be added to the customer\nEnter Customer Code:");
         try{
             ResultSet rs = connect.getData("SELECT * FROM customers WHERE c_code = '"+code+"'");
             if(rs.next()){
                 if(rs.getString("c_status").equals("Active")){
                     connect.updateData("UPDATE customers SET c_points = c_points + 1 WHERE c_code = '"+code+"'");
-                    guest.setText(rs.getString("c_id"));
-                    scanCustomer = true;
+                    guest.setText(rs.getString("c_fname")+"!");
+                    ccode.setText(""+rs.getInt("c_id"));
                 }else{
                     JOptionPane.showMessageDialog(null, "Customer Inactive! Please contact system administrator!");
                 }
             }else{
                 JOptionPane.showMessageDialog(null, "Invalid Customer Code!");
             }
+            resetMenu();
         }catch(SQLException ex){
             System.out.println(ex);
         }
     }//GEN-LAST:event_customerButtonMouseClicked
-
-    private void salesButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_salesButtonMouseClicked
-        resetMenu();
-        
-        salesButton.setBackground(new Color(80, 114, 123));
-        jLabel18.setForeground(Color.WHITE);
-        jLabel18.setFont(new Font(jLabel18.getFont().getFontName(), Font.BOLD, jLabel18.getFont().getSize()));
-        
-        sales_open = true;
-        cashier_sales up = new cashier_sales();
-        cashier_desktop.add(up).setVisible(true);; 
-    }//GEN-LAST:event_salesButtonMouseClicked
-
-    private void searchButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchButtonMouseEntered
-        if(search_open == false){
-            jLabel11.setForeground(Color.WHITE);
-        }
-    }//GEN-LAST:event_searchButtonMouseEntered
-
-    private void searchButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchButtonMouseExited
-        if(search_open == false){
-            jLabel11.setForeground(text1color);
-        }
-    }//GEN-LAST:event_searchButtonMouseExited
 
     private void voidButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_voidButtonMouseEntered
         if(void_open == false){
@@ -931,32 +811,8 @@ public class cashierMain extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_customerButtonMouseExited
 
-    private void salesButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_salesButtonMouseEntered
-        if(sales_open == false){
-            jLabel18.setForeground(Color.WHITE);
-        }
-    }//GEN-LAST:event_salesButtonMouseEntered
-
-    private void salesButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_salesButtonMouseExited
-        if(sales_open == false){
-            jLabel18.setForeground(text1color);
-        }
-    }//GEN-LAST:event_salesButtonMouseExited
-
-    private void jPanel13MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel13MouseEntered
-        if(settings_open == false){
-            jLabel20.setForeground(Color.WHITE);
-        }
-    }//GEN-LAST:event_jPanel13MouseEntered
-
-    private void jPanel13MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel13MouseExited
-        if(settings_open == false){
-            jLabel20.setForeground(text1color);
-        }
-    }//GEN-LAST:event_jPanel13MouseExited
-
     private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
-
+        desktop.setVisible(false);
     }//GEN-LAST:event_jLabel4MouseClicked
 
     private void userLogMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_userLogMouseEntered
@@ -964,10 +820,14 @@ public class cashierMain extends javax.swing.JFrame {
     }//GEN-LAST:event_userLogMouseEntered
 
     private void userLogMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_userLogMouseClicked
-
+        desktop.setVisible(true);
+        admin_profile up = new admin_profile();
+        desktop.add(up).setVisible(true);;
+       
     }//GEN-LAST:event_userLogMouseClicked
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
+        desktop.setVisible(false);
         Session sess = Session.getInstance();
         userLog.setText(sess.getFname() + " " + sess.getLname());
         codeLog.setText(sess.getCode());
@@ -1022,7 +882,7 @@ public class cashierMain extends javax.swing.JFrame {
         if(model.getRowCount() <= 0){
             JOptionPane.showMessageDialog(null, "Transaction is empty!");
         }else{
-            cashier_checkout checkout = new cashier_checkout(model, grandtotal_disp.getText(), guest.getText());
+            cashier_checkout checkout = new cashier_checkout(model, grandtotal_disp.getText(), Integer.parseInt(ccode.getText()));
             checkout.setVisible(true);
         }
     }//GEN-LAST:event_checkoutActionPerformed
@@ -1063,26 +923,23 @@ public class cashierMain extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JDesktopPane cashier_desktop;
+    private javax.swing.JLabel ccode;
     private javax.swing.JButton checkout;
     private javax.swing.JLabel codeLog;
     private javax.swing.JLabel code_disp;
     private javax.swing.JPanel customerButton;
     private javax.swing.JLabel date_disp;
+    private javax.swing.JDesktopPane desktop;
     private javax.swing.JLabel discount_disp;
     private javax.swing.JLabel grandtotal_disp;
     private javax.swing.JLabel guest;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
@@ -1093,11 +950,8 @@ public class cashierMain extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -1110,8 +964,6 @@ public class cashierMain extends javax.swing.JFrame {
     private javax.swing.JLabel pname_disp;
     private javax.swing.JLabel price_disp;
     private javax.swing.JLabel qty_disp;
-    private javax.swing.JPanel salesButton;
-    private javax.swing.JPanel searchButton;
     private javax.swing.JTextField searchbar;
     private javax.swing.JPanel searchbutton;
     private javax.swing.JTable table;
