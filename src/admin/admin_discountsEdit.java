@@ -23,16 +23,23 @@ public class admin_discountsEdit extends javax.swing.JFrame {
             redeem.setText(model.getValueAt(rowid, 5).toString());
             pcode = code.getText();
             
+            
             if((model.getValueAt(rowid, 4).toString()).equals("Percent")){
                 type.setSelectedItem("Percent");
             }else{
                 type.setSelectedItem("Fixed Amount");
             }
             
-            if((model.getValueAt(rowid, 6).toString()).equals("Available")){
-                status.setSelectedItem("Available");
+            if((model.getValueAt(rowid, 6).toString()).equals("Redeem on Product")){
+                rtype.setSelectedItem("Redeem on Product");
             }else{
-                status.setSelectedItem("Unavailable");
+                rtype.setSelectedItem("Redeem on Transaction");
+            }
+            
+            if((model.getValueAt(rowid, 7).toString()).equals("Active")){
+                status.setSelectedItem("Active");
+            }else{
+                status.setSelectedItem("Inactive");
             }
     }
     @SuppressWarnings("unchecked")
@@ -199,7 +206,7 @@ public class admin_discountsEdit extends javax.swing.JFrame {
         jPanel2.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 330, 130, 40));
 
         status.setBackground(new java.awt.Color(44, 88, 110));
-        status.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Available", "Unavailable" }));
+        status.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Active", "Inactive" }));
         status.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 statusActionPerformed(evt);

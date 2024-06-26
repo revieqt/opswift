@@ -8,8 +8,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JComponent;
@@ -625,6 +623,7 @@ public class admin_staff extends javax.swing.JInternalFrame {
         }
             open.lname.setText("<html><body>"+model.getValueAt(rowid, 3).toString()+ ", "+ model.getValueAt(rowid, 2).toString()+"</body></html>");
             open.type.setText(model.getValueAt(rowid, 5).toString());
+            
             Code128Auto code128 = new Code128Auto();
             String barcode=code128.encode(model.getValueAt(rowid, 1).toString());
             open.barcode.setText(barcode);

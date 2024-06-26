@@ -6,14 +6,12 @@
 package config;
 
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.time.LocalDate;
 import javax.swing.JOptionPane;
 
 /**
@@ -88,7 +86,7 @@ public class dbConnector {
             }
             pst.close();
         }catch(SQLException ex){
-                JOptionPane.showMessageDialog(null, "Cannot delete staff member. \nThis staff is currently associated with existing transactions.");
+                JOptionPane.showMessageDialog(null, "Deleted Unsuccessfully. \nThis data is currently associated with existing transactions.");
         }
     }
     
@@ -105,6 +103,10 @@ public class dbConnector {
             var = "c_";
         }else if(table.equals("discounts")){
             var = "d_";
+        }else if(table.equals("orders")){
+            var = "o_";
+        }else if(table.equals("suppliers")){
+            var = "s_";
         }else{
             var = "t_";
         }
@@ -168,6 +170,59 @@ public class dbConnector {
                 }else{
                     num = rs.getInt(1);
                 }
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+        return num;
+    }
+    
+    public int pendingCount(){
+        int num = 0;
+        try {
+            ResultSet rs = getData("SELECT COUNT(*) FROM orders WHERE o_status = 'Pending'");
+            if (rs.next()) {
+                num = rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+        return num;
+    }
+    
+    public int cancelledCount(){
+        int num = 0;
+        try {
+            ResultSet rs = getData("SELECT COUNT(*) FROM orders WHERE o_status = 'Cancelled'");
+            if (rs.next()) {
+                num = rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+        return num;
+    }
+    
+    public int recievedCount(){
+        int num = 0;
+        try {
+            ResultSet rs = getData("SELECT COUNT(*) FROM orders WHERE o_status = 'Recieved'");
+            if (rs.next()) {
+                num = rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+        return num;
+    }
+    
+    public int expectedCount(){
+        int num = 0;
+        try {
+            String query = "SELECT COUNT(*) FROM orders WHERE o_recieveon = '" + LocalDate.now() + "'";
+            ResultSet rs = getData(query);
+            if (rs.next()) {
+                num = rs.getInt(1);
             }
         } catch (SQLException ex) {
             System.out.println(ex);

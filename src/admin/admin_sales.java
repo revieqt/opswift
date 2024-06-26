@@ -157,6 +157,8 @@ public class admin_sales extends javax.swing.JInternalFrame {
         jPanel10 = new enhance.RoundPanel();
         jLabel11 = new javax.swing.JLabel();
         totalsales = new javax.swing.JLabel();
+        jPanel3 = new enhance.RoundBorder_g();
+        jLabel4 = new javax.swing.JLabel();
 
         main_panel.setBackground(new java.awt.Color(246, 244, 235));
         main_panel.setLayout(null);
@@ -197,11 +199,11 @@ public class admin_sales extends javax.swing.JInternalFrame {
         );
         transactiongraphLayout.setVerticalGroup(
             transactiongraphLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 190, Short.MAX_VALUE)
+            .addGap(0, 170, Short.MAX_VALUE)
         );
 
         main_panel.add(transactiongraph);
-        transactiongraph.setBounds(30, 140, 370, 190);
+        transactiongraph.setBounds(30, 180, 370, 170);
 
         salesgraph.setBackground(new java.awt.Color(255, 255, 255));
         salesgraph.setToolTipText("Search");
@@ -212,7 +214,7 @@ public class admin_sales extends javax.swing.JInternalFrame {
         });
         salesgraph.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
         main_panel.add(salesgraph);
-        salesgraph.setBounds(410, 140, 370, 190);
+        salesgraph.setBounds(410, 180, 370, 170);
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
         jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -270,7 +272,7 @@ public class admin_sales extends javax.swing.JInternalFrame {
             transtable.getColumnModel().getColumn(4).setResizable(false);
         }
 
-        jPanel4.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 730, 140));
+        jPanel4.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 730, 120));
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -286,7 +288,7 @@ public class admin_sales extends javax.swing.JInternalFrame {
         });
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 130, 40));
 
-        jPanel4.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 200, 150, 40));
+        jPanel4.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 180, 150, 40));
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -303,7 +305,7 @@ public class admin_sales extends javax.swing.JInternalFrame {
         jLabel3.setText("View Transaction");
         jPanel2.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 130, 40));
 
-        jPanel4.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 200, 150, 40));
+        jPanel4.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 180, 150, 40));
 
         searchbar.setForeground(new java.awt.Color(53, 55, 75));
         searchbar.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(120, 160, 131), 1, true));
@@ -340,7 +342,7 @@ public class admin_sales extends javax.swing.JInternalFrame {
         jPanel4.add(searchbutton, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 10, 40, -1));
 
         main_panel.add(jPanel4);
-        jPanel4.setBounds(30, 340, 750, 250);
+        jPanel4.setBounds(30, 360, 750, 230);
 
         jPanel8.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -389,6 +391,18 @@ public class admin_sales extends javax.swing.JInternalFrame {
 
         main_panel.add(jPanel10);
         jPanel10.setBounds(410, 70, 180, 60);
+
+        jPanel3.setBackground(new java.awt.Color(246, 244, 235));
+        jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel4.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(0, 51, 51));
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel4.setText("TRANSACTIONS FOR THE PAST 7 DAYS");
+        jPanel3.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(-4, 5, 750, 20));
+
+        main_panel.add(jPanel3);
+        jPanel3.setBounds(30, 140, 750, 30);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -491,12 +505,14 @@ public class admin_sales extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;

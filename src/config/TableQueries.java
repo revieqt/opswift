@@ -19,6 +19,7 @@ import javax.swing.table.TableModel;
 public class TableQueries {
     dbConnector connect = new dbConnector();
     Session sess = Session.getInstance();
+    
     public void addUser(String fname, String lname, String username, String type, String destination){
         int id = 0;
         if(connect.archiveCount("users")==0){
@@ -54,7 +55,7 @@ public class TableQueries {
         addLogs(sess.getFname()+ " "+ sess.getLname()+ " ("+sess.getId()+") updated "+fname+" "+lname+" ("+id+") information");
     }
     
-    public void addProduct(String code, String name, int quantity, double price,String status){
+    public void addProduct(String code, String name, int quantity, double price,String status, String sid, double sprice, int sws, double swsprice, int swsitems){
         int id = 0;
         if(connect.archiveCount("products")==0){
             id = 20001;
@@ -62,7 +63,7 @@ public class TableQueries {
             id = connect.lastId("p_id", "products");
         }
         
-        String insertQuery = "INSERT INTO products (p_id,p_barcode ,p_name, p_qty, p_price,p_status) VALUES ("+id+",'"+code+"','"+name+"','"+quantity+"','"+price+"','"+status+"')";
+        String insertQuery = "INSERT INTO products (p_id,p_barcode ,p_name, p_qty, p_price,p_status, p_supplier, p_mprice, p_ws, p_wsprice, p_wsitem) VALUES ("+id+",'"+code+"','"+name+"','"+quantity+"','"+price+"','"+status+"','"+sid+"','"+sprice+"',"+sws+",'"+swsprice+"','"+swsitems+"')";
         try {
             int rowsInserted = connect.insertData(insertQuery);
             if (rowsInserted > 0) {
@@ -78,10 +79,11 @@ public class TableQueries {
         
     }
     
-    public void updateProduct(int id, String name, String code, int quantity, double price,String status){
-        String insertQuery = "UPDATE products SET p_barcode = '"+code+"', p_name = '"+name+"', p_qty = '"+quantity+"', p_price = '"+price+"', p_status = '"+status+"' WHERE p_id = '"+id+"'";
+    public void updateProduct(int id, int quantity, double price,String status, double mprice, boolean ws, double wsprice, int wsitem){
+        String insertQuery = "UPDATE products SET p_mprice = '"+mprice+"', p_ws = "+ws+", p_wsprice = '"+wsprice+"', p_wsitem = '"+wsitem+"', p_qty = '"+quantity+"', p_price = '"+price+"', p_status = '"+status+"' WHERE p_id = '"+id+"'";
         connect.updateData(insertQuery);
-        addLogs(sess.getFname()+ " "+ sess.getLname()+ " ("+sess.getId()+") updated product '"+name+"' ("+code+") information");
+        JOptionPane.showMessageDialog(null, "Product "+id+" Updated Successfully!");
+        addLogs(sess.getFname()+ " "+ sess.getLname()+ " ("+sess.getId()+") updated product "+id+" information");
     }
     
     public void addCustomer(String fname, String lname, String bdate, int age, String num, String email, String img){
@@ -159,9 +161,11 @@ public class TableQueries {
             case "discounts":
                 var = "d_";
                 break;
+            case "suppliers":
+                var = "s_";
+                break;
             default:
                 var = "t_";
-                break;
         }
         if(archiveId != -1){
             Object value = model.getValueAt(archiveId, 0);
@@ -203,6 +207,11 @@ public class TableQueries {
                 var = "d_";
                 qr = "d_status = 'Available'";
                 break;
+            case "Suppliers":
+                tbl = "suppliers";
+                var = "s_";
+                qr = "s_status = 'Active'";
+                break;
             default:
                 var = "t_";
                 break;
@@ -220,6 +229,49 @@ public class TableQueries {
             }
         }else{
             JOptionPane.showMessageDialog(null, "Please select an ID to Restore!");
+        }
+    }
+    
+    public void addSupplier(String name,String address, String contact){
+        int id = 0;
+        if(connect.archiveCount("suppliers")==0){
+            id = 60001;
+        }else{
+            id = connect.lastId("s_id", "suppliers");
+        }
+        
+        String insertQuery = "INSERT INTO suppliers (s_id, s_name, s_address, s_contact, s_status) VALUES ("+id+",'"+name+"','"+address+"','"+contact+"','Active')";
+        try {
+            int rowsInserted = connect.insertData(insertQuery);
+            if (rowsInserted > 0) {
+                JOptionPane.showMessageDialog(null, "Supplier Added Successfully!\nSupplier ID: "+id);
+                addLogs(sess.getFname()+ " "+ sess.getLname()+ " ("+sess.getId()+") added supplier "+name+" ("+id+")");
+            } else {
+                JOptionPane.showMessageDialog(null, "Failed to add Supplier!");
+            }
+        } catch (SQLException ex) {
+            System.out.println("Error inserting data: " + ex.getMessage());
+        }
+    }
+    
+    public void addOrder(int id, int supplier, int qty, double total, String receive){
+        int oid = 0;
+        if(connect.archiveCount("orders")==0){
+            oid = 70001;
+        }else{
+            oid = connect.lastId("o_id", "orders")+1;
+        }
+        String insertQuery = "INSERT INTO orders (o_id, o_product, o_supplier, o_qty, o_total, o_recieveon, o_status) VALUES ("+oid+","+id+",'"+supplier+"','"+qty+"','"+total+"','"+receive+"','Pending')";
+        try {
+            int rowsInserted = connect.insertData(insertQuery);
+            if (rowsInserted > 0) {
+                JOptionPane.showMessageDialog(null, "Product "+id+" Ordered Successfully!");
+                addLogs(sess.getFname()+ " "+ sess.getLname()+ " ("+sess.getId()+") ordered product "+id);
+            } else {
+                JOptionPane.showMessageDialog(null, "Failed to add Order!");
+            }
+        } catch (SQLException ex) {
+            System.out.println("Error inserting data: " + ex.getMessage());
         }
     }
     

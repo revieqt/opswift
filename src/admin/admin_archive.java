@@ -56,6 +56,8 @@ public class admin_archive extends javax.swing.JInternalFrame {
             case "Discounts":
                 searchQuery = "SELECT * FROM discounts WHERE (d_id LIKE '%" + query + "%' OR d_code LIKE '%" + query + "%' OR d_name LIKE '%" + query + "%' OR d_amount LIKE '%" + query + "%' OR d_type LIKE '%" + query + "%' OR d_redeemable LIKE '%" + query + "%') AND d_status = 'Archived'";
                 break;
+            case "Suppliers":
+                searchQuery = "SELECT * FROM suppliers WHERE (s_id LIKE '%" + query + "%' OR s_name LIKE '%" + query + "%' OR s_address LIKE '%" + query + "%' OR s_contact LIKE '%" + query + "%') AND s_status = 'Archived'";
         }
 
         try {
@@ -203,7 +205,7 @@ public class admin_archive extends javax.swing.JInternalFrame {
         main_panel.add(jLabel31);
         jLabel31.setBounds(30, 580, 220, 14);
 
-        type.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Staff", "Products", "Customers", "Discounts" }));
+        type.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Staff", "Products", "Customers", "Discounts", "Suppliers" }));
         main_panel.add(type);
         type.setBounds(480, 80, 250, 30);
 
@@ -333,6 +335,9 @@ public class admin_archive extends javax.swing.JInternalFrame {
             }else if(type.getSelectedItem().equals("Customers")){
                 table = "customers";
                 var = "c_id";
+            }else if(type.getSelectedItem().equals("Suppliers")){
+                table = "suppliers";
+                var = "s_id";
             }else{
                 table = "discounts";
                 var = "d_id";

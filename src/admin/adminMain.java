@@ -111,6 +111,8 @@ public class adminMain extends javax.swing.JFrame {
     Color text1color = new Color(120, 160, 131);
     boolean staff_open = false;
     boolean products_open = false;
+    boolean orders_open = false;
+    boolean suppliers_open = false;
     boolean customers_open = false;
     boolean sales_open = false;
     boolean discounts_open = false;
@@ -121,7 +123,7 @@ public class adminMain extends javax.swing.JFrame {
         Date now = new Date();
         
         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
-        String time = timeFormat.format(now);
+        String time = timeFormat.format(new Date());
         
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
         String date = dateFormat.format(now);
@@ -168,6 +170,16 @@ public class adminMain extends javax.swing.JFrame {
         jLabel16.setForeground(text1color);
         jLabel16.setFont(new Font("SansSerif", Font.PLAIN, 12));
         
+        orders_open = false;
+        jPanel22.setBackground(sidecolor);
+        jLabel30.setForeground(text1color);
+        jLabel30.setFont(new Font("SansSerif", Font.PLAIN, 12));
+        
+        suppliers_open = false;
+        jPanel18.setBackground(sidecolor);
+        jLabel28.setForeground(text1color);
+        jLabel28.setFont(new Font("SansSerif", Font.PLAIN, 12));
+        
         customers_open = false;
         jPanel14.setBackground(sidecolor);
         jLabel17.setForeground(text1color);
@@ -182,11 +194,6 @@ public class adminMain extends javax.swing.JFrame {
         jPanel16.setBackground(sidecolor);
         jLabel19.setForeground(text1color);
         jLabel19.setFont(new Font("SansSerif", Font.PLAIN, 12));
-        
-        settings_open = false;
-        jPanel13.setBackground(sidecolor);
-        jLabel20.setForeground(text1color);
-        jLabel20.setFont(new Font("SansSerif", Font.PLAIN, 12));
         
         archives_open = false;
         jPanel17.setBackground(sidecolor);
@@ -236,6 +243,32 @@ public class adminMain extends javax.swing.JFrame {
         products_open = true;
     }
     
+    public void ordersPanel(){
+        resetMenu();
+        desktop.setVisible(true);
+        admin_orders up = new admin_orders();
+        desktop.add(up).setVisible(true);
+        jPanel4.setVisible(false);
+        jPanel22.setBackground(new Color(80, 114, 123));
+        jLabel30.setForeground(Color.WHITE);
+        jLabel30.setFont(new Font(jLabel30.getFont().getFontName(), Font.BOLD, jLabel30.getFont().getSize()));
+        
+        orders_open = true;
+    }
+    
+    public void suppliersPanel(){
+        resetMenu();
+        desktop.setVisible(true);
+        admin_suppliers up = new admin_suppliers();
+        desktop.add(up).setVisible(true);
+        jPanel4.setVisible(false);
+        jPanel18.setBackground(new Color(80, 114, 123));
+        jLabel28.setForeground(Color.WHITE);
+        jLabel28.setFont(new Font(jLabel28.getFont().getFontName(), Font.BOLD, jLabel28.getFont().getSize()));
+        
+        suppliers_open = true;
+    }
+    
     public void customersPanel(){
         resetMenu();
         desktop.setVisible(true);
@@ -275,20 +308,6 @@ public class adminMain extends javax.swing.JFrame {
         discounts_open = true;
     }
     
-    public void settingsPanel(){
-        resetMenu();
-        desktop.setVisible(true);
-        admin_settings up = new admin_settings();
-        desktop.add(up).setVisible(true);
-        jPanel4.setVisible(false);
-        jPanel13.setBackground(new Color(80, 114, 123));
-        jLabel20.setForeground(Color.WHITE);
-        jLabel20.setFont(new Font(jLabel19.getFont().getFontName(), Font.BOLD, jLabel19.getFont().getSize()));
-        
-        settings_open = true;
-    }
-    
-    
     
     public void archivePanel(){
         admin_archive up = new admin_archive();
@@ -319,9 +338,6 @@ public class adminMain extends javax.swing.JFrame {
         jPanel12 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        jPanel13 = new javax.swing.JPanel();
-        jLabel20 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
         jPanel14 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
@@ -339,6 +355,13 @@ public class adminMain extends javax.swing.JFrame {
         jPanel17 = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
         jLabel21 = new javax.swing.JLabel();
+        jLabel26 = new javax.swing.JLabel();
+        jPanel18 = new javax.swing.JPanel();
+        jLabel27 = new javax.swing.JLabel();
+        jLabel28 = new javax.swing.JLabel();
+        jPanel22 = new javax.swing.JPanel();
+        jLabel29 = new javax.swing.JLabel();
+        jLabel30 = new javax.swing.JLabel();
         jPanel9 = new enhance.RoundBorder_w();
         jLabel14 = new javax.swing.JLabel();
         numdiscounts = new javax.swing.JLabel();
@@ -446,7 +469,7 @@ public class adminMain extends javax.swing.JFrame {
         jLabel16.setText("Products");
         jPanel11.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 0, 80, 30));
 
-        jPanel5.add(jPanel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 170, 150, 30));
+        jPanel5.add(jPanel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 310, 150, 30));
 
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/media/opswift-removebg-preview (3).png"))); // NOI18N
         jLabel4.setToolTipText("[F1] Back to Dashboard");
@@ -481,31 +504,7 @@ public class adminMain extends javax.swing.JFrame {
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/media/icon_user_20.png"))); // NOI18N
         jPanel12.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 40, 30));
 
-        jPanel5.add(jPanel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 130, 150, 30));
-
-        jPanel13.setBackground(new java.awt.Color(52, 73, 85));
-        jPanel13.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jPanel13MouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jPanel13MouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                jPanel13MouseExited(evt);
-            }
-        });
-        jPanel13.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel20.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        jLabel20.setForeground(new java.awt.Color(120, 160, 131));
-        jLabel20.setText("Settings");
-        jPanel13.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 0, 80, 30));
-
-        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/media/icon_settings_20.png"))); // NOI18N
-        jPanel13.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 40, 30));
-
-        jPanel5.add(jPanel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 510, 150, 30));
+        jPanel5.add(jPanel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 120, 150, 30));
 
         jPanel14.setBackground(new java.awt.Color(52, 73, 85));
         jPanel14.setToolTipText("[F4] Customers");
@@ -530,12 +529,12 @@ public class adminMain extends javax.swing.JFrame {
         jLabel17.setText("Customers");
         jPanel14.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 0, 80, 30));
 
-        jPanel5.add(jPanel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 210, 150, 30));
+        jPanel5.add(jPanel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 160, 150, 30));
 
-        jLabel5.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel5.setText("Menu");
-        jPanel5.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 90, -1, -1));
+        jLabel5.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(120, 160, 131));
+        jLabel5.setText("Inventory");
+        jPanel5.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 280, -1, 20));
 
         jPanel15.setBackground(new java.awt.Color(52, 73, 85));
         jPanel15.setToolTipText("[F5] Sales");
@@ -560,7 +559,7 @@ public class adminMain extends javax.swing.JFrame {
         jLabel18.setText("Sales");
         jPanel15.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 0, 80, 30));
 
-        jPanel5.add(jPanel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 290, 150, 30));
+        jPanel5.add(jPanel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 240, 150, 30));
 
         jPanel16.setBackground(new java.awt.Color(52, 73, 85));
         jPanel16.setToolTipText("[F6] Discounts");
@@ -585,7 +584,7 @@ public class adminMain extends javax.swing.JFrame {
         jLabel19.setText("Discounts");
         jPanel16.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 0, 80, 30));
 
-        jPanel5.add(jPanel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 250, 150, 30));
+        jPanel5.add(jPanel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 200, 150, 30));
 
         jPanel2.setBackground(new java.awt.Color(52, 73, 85));
         jPanel2.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -639,7 +638,62 @@ public class adminMain extends javax.swing.JFrame {
         jLabel21.setText("Archives");
         jPanel17.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 0, 80, 30));
 
-        jPanel5.add(jPanel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 330, 150, 30));
+        jPanel5.add(jPanel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 510, 150, 30));
+
+        jLabel26.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        jLabel26.setForeground(new java.awt.Color(120, 160, 131));
+        jLabel26.setText("Menu");
+        jPanel5.add(jLabel26, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 86, -1, 30));
+
+        jPanel18.setBackground(new java.awt.Color(52, 73, 85));
+        jPanel18.setToolTipText("[F3] Products");
+        jPanel18.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel18MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jPanel18MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jPanel18MouseExited(evt);
+            }
+        });
+        jPanel18.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel27.setIcon(new javax.swing.ImageIcon(getClass().getResource("/media/icons8-supplier-20.png"))); // NOI18N
+        jPanel18.add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 40, 30));
+
+        jLabel28.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        jLabel28.setForeground(new java.awt.Color(120, 160, 131));
+        jLabel28.setText("Suppliers");
+        jPanel18.add(jLabel28, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 0, 80, 30));
+
+        jPanel5.add(jPanel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 390, 150, 30));
+
+        jPanel22.setBackground(new java.awt.Color(52, 73, 85));
+        jPanel22.setToolTipText("[F3] Products");
+        jPanel22.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel22MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jPanel22MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jPanel22MouseExited(evt);
+            }
+        });
+        jPanel22.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel29.setIcon(new javax.swing.ImageIcon(getClass().getResource("/media/icons8-box-20.png"))); // NOI18N
+        jPanel22.add(jLabel29, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 40, 30));
+
+        jLabel30.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        jLabel30.setForeground(new java.awt.Color(120, 160, 131));
+        jLabel30.setText("Orders");
+        jPanel22.add(jLabel30, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 0, 80, 30));
+
+        jPanel5.add(jPanel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 350, 150, 30));
 
         jPanel1.add(jPanel5);
         jPanel5.setBounds(0, 0, 170, 610);
@@ -833,10 +887,6 @@ public class adminMain extends javax.swing.JFrame {
         staffPanel();
     }//GEN-LAST:event_jPanel12MouseClicked
 
-    private void jPanel13MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel13MouseClicked
-        settingsPanel();
-    }//GEN-LAST:event_jPanel13MouseClicked
-
     private void jPanel14MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel14MouseClicked
         customersPanel();
     }//GEN-LAST:event_jPanel14MouseClicked
@@ -909,18 +959,6 @@ public class adminMain extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jPanel16MouseExited
 
-    private void jPanel13MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel13MouseEntered
-        if(settings_open == false){
-            jLabel20.setForeground(Color.WHITE);
-        }
-    }//GEN-LAST:event_jPanel13MouseEntered
-
-    private void jPanel13MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel13MouseExited
-        if(settings_open == false){
-            jLabel20.setForeground(text1color);
-        }
-    }//GEN-LAST:event_jPanel13MouseExited
-
     private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
         dashboardPanel();
     }//GEN-LAST:event_jLabel4MouseClicked
@@ -987,6 +1025,38 @@ public class adminMain extends javax.swing.JFrame {
         discountsPanel();
     }//GEN-LAST:event_jPanel9MouseClicked
 
+    private void jPanel18MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel18MouseClicked
+        suppliersPanel();
+    }//GEN-LAST:event_jPanel18MouseClicked
+
+    private void jPanel18MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel18MouseEntered
+        if(suppliers_open == false){
+            jLabel28.setForeground(Color.WHITE);
+        }
+    }//GEN-LAST:event_jPanel18MouseEntered
+
+    private void jPanel18MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel18MouseExited
+        if(suppliers_open == false){
+            jLabel28.setForeground(text1color);
+        }
+    }//GEN-LAST:event_jPanel18MouseExited
+
+    private void jPanel22MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel22MouseClicked
+        ordersPanel();
+    }//GEN-LAST:event_jPanel22MouseClicked
+
+    private void jPanel22MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel22MouseEntered
+        if(orders_open == false){
+            jLabel30.setForeground(Color.WHITE);
+        }
+    }//GEN-LAST:event_jPanel22MouseEntered
+
+    private void jPanel22MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel22MouseExited
+        if(orders_open == false){
+            jLabel30.setForeground(text1color);
+        }
+    }//GEN-LAST:event_jPanel22MouseExited
+
     /**
      * @param args the command line arguments
      */
@@ -1039,31 +1109,35 @@ public class adminMain extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
+    private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel27;
+    private javax.swing.JLabel jLabel28;
+    private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
-    private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel15;
     private javax.swing.JPanel jPanel16;
     private javax.swing.JPanel jPanel17;
+    private javax.swing.JPanel jPanel18;
     private javax.swing.JPanel jPanel19;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel20;
     private javax.swing.JPanel jPanel21;
+    private javax.swing.JPanel jPanel22;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;

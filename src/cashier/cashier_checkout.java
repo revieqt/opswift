@@ -13,6 +13,7 @@ import javax.swing.table.DefaultTableModel;
 public class cashier_checkout extends javax.swing.JFrame {
     static DefaultTableModel dummymodel;
     static String dummytotal;
+    static int dummycustomer;
     public DefaultTableModel mdl;
     public String sub;
     public boolean applyDiscount = false;
@@ -20,9 +21,9 @@ public class cashier_checkout extends javax.swing.JFrame {
     public double grandtotal;
     public double payment;
     public double change;
-    public String customer;
+    public int customer;
     
-    public cashier_checkout(DefaultTableModel model, String total, String customer) {
+    public cashier_checkout(DefaultTableModel model, String total, int customer) {
         initComponents();
         this.mdl = model;
         this.sub = total;
@@ -65,7 +66,7 @@ public class cashier_checkout extends javax.swing.JFrame {
         try{
         String query = "";
         
-        if(customer.equals("Guest!")){
+        if(customer==0){
             query = "INSERT INTO transactions (t_staff, t_total) VALUES ("+sess.getId() +", "+grandtotal+")";
         }else{
             query = "INSERT INTO transactions (t_staff, t_customer, t_total) VALUES ("+sess.getId() +", "+customer+", "+grandtotal+")";
@@ -111,12 +112,15 @@ public class cashier_checkout extends javax.swing.JFrame {
         jPanel3 = new enhance.RoundPanel_lb();
         jLabel4 = new javax.swing.JLabel();
         transactionid_disp = new javax.swing.JLabel();
-        jPanel5 = new enhance.RoundPanel_w();
-        error = new javax.swing.JLabel();
         change_disp = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowActivated(java.awt.event.WindowEvent evt) {
+                formWindowActivated(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(80, 114, 123));
         jPanel1.setLayout(null);
@@ -227,18 +231,7 @@ public class cashier_checkout extends javax.swing.JFrame {
         transactionid_disp.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         transactionid_disp.setText("#TR-00000001");
         jPanel1.add(transactionid_disp);
-        transactionid_disp.setBounds(430, 20, 130, 40);
-
-        jPanel5.setBackground(new java.awt.Color(80, 114, 123));
-        jPanel5.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        error.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
-        error.setForeground(new java.awt.Color(153, 0, 0));
-        error.setText(".");
-        jPanel5.add(error, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 300, 190, 20));
-
-        jPanel1.add(jPanel5);
-        jPanel5.setBounds(290, 60, 270, 380);
+        transactionid_disp.setBounds(140, 20, 130, 40);
 
         change_disp.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
         change_disp.setForeground(new java.awt.Color(255, 255, 255));
@@ -258,7 +251,7 @@ public class cashier_checkout extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 580, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 288, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -366,6 +359,10 @@ double payment = 0.0;
         checkout(mdl);
     }//GEN-LAST:event_jPanel2MouseClicked
 
+    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
+        
+    }//GEN-LAST:event_formWindowActivated
+
     /**
      * @param args the command line arguments
      */
@@ -397,7 +394,7 @@ double payment = 0.0;
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new cashier_checkout(dummymodel, dummytotal).setVisible(true);
+                new cashier_checkout(dummymodel, dummytotal, dummycustomer).setVisible(true);
             }
         });
     }
@@ -407,7 +404,6 @@ double payment = 0.0;
     private javax.swing.JLabel change_disp;
     private javax.swing.JButton discount_button;
     private javax.swing.JLabel discount_disp;
-    private javax.swing.JLabel error;
     private javax.swing.JLabel grandtotal_disp;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel17;
@@ -419,7 +415,6 @@ double payment = 0.0;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel subtotal_disp;
     private javax.swing.JLabel transactionid_disp;

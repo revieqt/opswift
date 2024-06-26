@@ -172,7 +172,11 @@ public class admin_salesView extends javax.swing.JFrame {
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
         dbConnector connect = new dbConnector();
         try {
-            ResultSet rs = connect.getData("SELECT ti_barcode, ti_name, ti_price, ti_qty, ti_subtotal FROM transactions_items WHERE ti_transaction = "+id);
+            ResultSet rs = connect.getData("SELECT p.p_barcode AS Barcode, p.p_name AS Name, ti.ti_price AS Price, ti.ti_qty AS Quantity, "
+                    + "CONCAT(d.d_amount,' ',d.d_type) AS Discount, ti.ti_subtotal AS Subtotal FROM transactions_items ti "
+                    + "JOIN products p ON ti.ti_product = p.p_id "
+                    + "JOIN discounts d ON ti.ti_discount = d.d_id "
+                    + "WHERE ti_transaction = "+id);
             items.setModel(DbUtils.resultSetToTableModel(rs));
         } catch (SQLException ex) {
             System.out.println(ex);
